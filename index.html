@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>¡TU AVENTURA!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            /* DEFAULTS (Space) */
+            --bg-color: #0B1026;
+            --bg-gradient: linear-gradient(135deg, #0B1026 0%, #2B32B2 100%);
+            --primary: #F72585;
+            --secondary: #4CC9F0;
+            --accent: #FFD93D;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-main: #FFFFFF;
+            --success: #2ECC71;
+
+            --icon-circle-bg: rgba(255, 255, 255, 0.1);
+            --font-main: 'Nunito', sans-serif;
+            --font-head: 'Fredoka One', cursive;
+        }
+
+        /* 🚀 THEME: SPACE */
+        body.theme-space {
+            --bg-gradient: linear-gradient(135deg, #0B1026 0%, #2B32B2 100%);
+            --primary: #F72585;
+            --secondary: #4CC9F0;
+            --accent: #FFD93D;
+        }
+
+        body.theme-space .bg-overlay {
+            background-image:
+                radial-gradient(2px 2px at 20px 30px, #eee, rgba(0, 0, 0, 0)),
+                radial-gradient(2px 2px at 40px 70px, #fff, rgba(0, 0, 0, 0)),
+                radial-gradient(2px 2px at 90px 40px, #fff, rgba(0, 0, 0, 0));
+            background-size: 200px 200px;
+            animation: twinkle 5s infinite;
+        }
+
+        /* 🌲 THEME: FOREST */
+        body.theme-forest {
+            --bg-gradient: linear-gradient(135deg, #1b5e20 0%, #81c784 100%);
+            --primary: #FF7043;
+            --secondary: #4DB6AC;
+            --accent: #FFD54F;
+            --glass: rgba(255, 255, 255, 0.2);
+            --glass-border: rgba(255, 255, 255, 0.3);
+        }
+
+        body.theme-forest .bg-overlay {
+            background-image: url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M20 5 L10 25 H30 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: 60px 60px;
+        }
+
+        /* 🏴‍☠️ THEME: PIRATE */
+        body.theme-pirate {
+            --bg-gradient: linear-gradient(135deg, #1a237e 0%, #00acc1 100%);
+            --primary: #d32f2f;
+            --secondary: #ffd700;
+            --accent: #ffeb3b;
+            --glass: rgba(255, 248, 225, 0.15);
+        }
+
+        body.theme-pirate .bg-overlay {
+            background-image: url('data:image/svg+xml;utf8,<svg width="60" height="30" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg"><path d="M0 15 Q 15 0 30 15 T 60 15" stroke="rgba(255,255,255,0.1)" fill="none" stroke-width="2"/></svg>');
+            background-size: 60px 60px;
+            animation: waves 4s infinite linear;
+        }
+
+        /* 🦁 THEME: JUNGLE */
+        body.theme-jungle {
+            --bg-gradient: linear-gradient(135deg, #004d40 0%, #00bfa5 100%);
+            --primary: #ffab00;
+            /* Orange tiger */
+            --secondary: #64dd17;
+            /* Bright Green */
+            --accent: #ffd600;
+        }
+
+        body.theme-jungle .bg-overlay {
+            background-image: url('data:image/svg+xml;utf8,<svg width="50" height="50" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg"><path d="M25 0 Q 35 25 25 50 Q 15 25 25 0" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: 50px 50px;
+        }
+
+        /* 🦕 THEME: DINO */
+        body.theme-dino {
+            --bg-gradient: linear-gradient(135deg, #3e2723 0%, #795548 100%);
+            --primary: #ff5722;
+            /* Lava */
+            --secondary: #8d6e63;
+            --accent: #ffcc80;
+        }
+
+        body.theme-dino .bg-overlay {
+            background-image: url('data:image/svg+xml;utf8,<svg width="60" height="40" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="30" r="5" fill="rgba(255,255,255,0.1)"/><path d="M30 30 L40 10 L50 30 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: 80px 80px;
+        }
+
+        /* 🏎️ THEME: RACING */
+        body.theme-racing {
+            --bg-gradient: linear-gradient(135deg, #212121 0%, #424242 100%);
+            --primary: #d50000;
+            /* Red */
+            --secondary: #ffffff;
+            --accent: #ffea00;
+        }
+
+        body.theme-racing .bg-overlay {
+            background-image: url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="20" height="20" fill="rgba(255,255,255,0.1)"/><rect x="20" y="20" width="20" height="20" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: 40px 40px;
+        }
+
+        /* 🦸 THEME: SUPERHERO */
+        body.theme-hero {
+            --bg-gradient: linear-gradient(135deg, #01579b 0%, #0288d1 100%);
+            /* Hero Blue */
+            --primary: #d50000;
+            /* Hero Red */
+            --secondary: #ffeb3b;
+            /* Hero Yellow */
+            --accent: #ffffff;
+        }
+
+        body.theme-hero .bg-overlay {
+            background-image: url('data:image/svg+xml;utf8,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><path d="M30 0 L40 20 L60 20 L45 35 L50 55 L30 40 L10 55 L15 35 L0 20 L20 20 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: 100px 100px;
+            animation: boom 2s infinite alternate;
+        }
+
+
+        /* RESET & BASE */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+            transition: background 0.5s ease;
+        }
+
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: var(--font-head);
+            text-transform: uppercase;
+            text-align: center;
+            margin: 0.5em 0;
+            text-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        h1.main-title {
+            color: var(--accent);
+            font-size: 2.2rem;
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+
+        /* HEADERS / NAV */
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid var(--glass-border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .score-board {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 8px 25px;
+            border-radius: 50px;
+            border: 2px solid var(--secondary);
+            font-family: var(--font-head);
+            font-size: 1.4rem;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .points-pop {
+            position: absolute;
+            color: var(--accent);
+            font-size: 2.5rem;
+            font-weight: 800;
+            pointer-events: none;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            animation: fadeUp 0.8s forwards;
+            z-index: 999;
+        }
+
+        /* SCREENS */
+        section.screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            flex: 1;
+            animation: fadeIn 0.4s ease;
+        }
+
+        section.screen.active {
+            display: flex;
+        }
+
+        /* SELECTION SCREEN CARDS */
+        .adventure-card {
+            background: var(--glass);
+            border: 3px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            width: 100%;
+            max-width: 300px;
+            margin: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .adventure-card:active {
+            transform: scale(0.96);
+        }
+
+        .adventure-icon {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+        }
+
+        .adventure-title {
+            font-family: var(--font-head);
+            font-size: 1.1rem;
+            color: var(--text-main);
+        }
+
+        .adventure-desc {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            margin-top: 5px;
+            display: block;
+        }
+
+        /* Hide desc on grid */
+
+        /* THEME PREVIEWS FOR CARDS */
+        .card-space {
+            background: linear-gradient(135deg, rgba(11, 16, 38, 0.8), rgba(43, 50, 178, 0.8));
+            border-color: #4CC9F0;
+        }
+
+        .card-forest {
+            background: linear-gradient(135deg, rgba(27, 94, 32, 0.8), rgba(129, 199, 132, 0.8));
+            border-color: #4DB6AC;
+        }
+
+        .card-pirate {
+            background: linear-gradient(135deg, rgba(26, 35, 126, 0.8), rgba(0, 172, 193, 0.8));
+            border-color: #FFD700;
+        }
+
+        .card-jungle {
+            background: linear-gradient(135deg, #004d40, #00bfa5);
+            border-color: #ffab00;
+        }
+
+        .card-dino {
+            background: linear-gradient(135deg, #3e2723, #795548);
+            border-color: #ff5722;
+        }
+
+        .card-racing {
+            background: linear-gradient(135deg, #212121, #424242);
+            border-color: #d50000;
+        }
+
+        .card-hero {
+            background: linear-gradient(135deg, #01579b, #0288d1);
+            border-color: #ffeb3b;
+        }
+
+
+        /* CLOTHING GRID & CARDS */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 15px;
+            width: 100%;
+            padding: 10px;
+        }
+
+        .card {
+            background: var(--glass);
+            border: 2px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 15px 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            transition: all 0.2s;
+            aspect-ratio: 1;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card:active {
+            transform: scale(0.95);
+        }
+
+        .card.selected {
+            border-color: var(--secondary);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 15px var(--secondary);
+        }
+
+        .card.done {
+            background: rgba(46, 204, 113, 0.2);
+            border-color: var(--success);
+            opacity: 0.7;
+            transform: scale(0.98);
+        }
+
+        .card.done .card-label {
+            text-decoration: line-through;
+            color: var(--success);
+        }
+
+        .icon-circle {
+            background: var(--icon-circle-bg);
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            font-size: 3rem;
+        }
+
+        .card-label {
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            text-align: center;
+            line-height: 1.1;
+        }
+
+        /* BUTTONS */
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.4rem;
+            font-family: var(--font-head);
+            text-transform: uppercase;
+            border-radius: 50px;
+            box-shadow: 0 5px 0 rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            width: 80%;
+            max-width: 400px;
+            margin: 20px auto;
+            display: block;
+            transition: transform 0.1s;
+        }
+
+        .btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        /* SETUP */
+        .setup-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .setup-col {
+            flex: 1 1 300px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 15px;
+        }
+
+        .setup-col h3 {
+            color: var(--secondary);
+            text-align: left;
+            margin-left: 10px;
+        }
+
+        /* ANIMATIONS */
+        @keyframes twinkle {
+
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes waves {
+            0% {
+                background-position: 0 0;
+            }
+
+            100% {
+                background-position: 60px 0;
+            }
+        }
+
+        @keyframes boom {
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-60px);
+            }
+        }
+
+        /* UTIL */
+        .hidden {
+            display: none !important;
+        }
+
+        .message-area {
+            font-size: 1.3rem;
+            margin: 10px;
+            text-align: center;
+            color: var(--accent);
+            font-weight: bold;
+            min-height: 1.5em;
+        }
+
+        .big-icon {
+            font-size: 6rem;
+            margin: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+    </style>
+</head>
+
+<body class="theme-space"> <!-- Default Theme -->
+
+    <div class="bg-overlay"></div>
+
+    <header id="main-header" class="hidden">
+        <h1 class="main-title" id="header-title">MI AVENTURA</h1>
+        <div class="score-board">
+            <span id="score-icon">⭐</span>
+            <span id="score-display">0</span>
+        </div>
+    </header>
+
+    <!-- 1. ADVENTURE SELECTOR -->
+    <section id="screen-adventure" class="screen active">
+        <h1 class="main-title" style="font-size: 2.2rem; margin-top: 30px;">ELIGE TU MISIÓN</h1>
+
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 800px; gap: 10px;">
+            <!-- ORIGINAL -->
+            <div class="adventure-card card-space" onclick="selectAdventure('SPACE')">
+                <div class="adventure-icon">🚀</div>
+                <div class="adventure-title">ESPACIO</div>
+                <div class="adventure-desc">Conviértete en astronauta</div>
+            </div>
+            <div class="adventure-card card-forest" onclick="selectAdventure('FOREST')">
+                <div class="adventure-icon">🌲</div>
+                <div class="adventure-title">BOSQUE</div>
+                <div class="adventure-desc">Explora la naturaleza</div>
+            </div>
+            <div class="adventure-card card-pirate" onclick="selectAdventure('PIRATE')">
+                <div class="adventure-icon">🏴‍☠️</div>
+                <div class="adventure-title">PIRATAS</div>
+                <div class="adventure-desc">Busca el tesoro</div>
+            </div>
+
+            <!-- NEW -->
+            <div class="adventure-card card-jungle" onclick="selectAdventure('JUNGLE')">
+                <div class="adventure-icon">🦁</div>
+                <div class="adventure-title">SELVA</div>
+                <div class="adventure-desc">Explora la selva</div>
+            </div>
+            <div class="adventure-card card-dino" onclick="selectAdventure('DINO')">
+                <div class="adventure-icon">🦖</div>
+                <div class="adventure-title">DINOS</div>
+                <div class="adventure-desc">Mundo Jurásico</div>
+            </div>
+            <div class="adventure-card card-racing" onclick="selectAdventure('RACING')">
+                <div class="adventure-icon">🏎️</div>
+                <div class="adventure-title">CARRERAS</div>
+                <div class="adventure-desc">Gran Premio</div>
+            </div>
+            <div class="adventure-card card-hero" onclick="selectAdventure('HERO')">
+                <div class="adventure-icon">🦸</div>
+                <div class="adventure-title">HÉROE</div>
+                <div class="adventure-desc">Salvar el mundo</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. SETUP PHASE -->
+    <section id="screen-setup" class="screen">
+        <h2 id="setup-title">PREPARAR EQUIPO</h2>
+
+        <div class="setup-row">
+            <!-- 1. HABITACIÓN -->
+            <div class="setup-col">
+                <h3 id="setup-tidy-title">🛏️ HABITACIÓN</h3>
+                <div class="grid-container" id="setup-tidy-grid"></div>
+            </div>
+            <!-- 2. DESAYUNO -->
+            <div class="setup-col">
+                <h3 id="setup-breakfast-title">🥣 DESAYUNO</h3>
+                <div class="grid-container" id="setup-breakfast-grid"></div>
+            </div>
+            <!-- 3. DIENTES -->
+            <div class="setup-col">
+                <h3 id="setup-teeth-title">🪥 ASEO</h3>
+                <div class="grid-container" id="setup-teeth-grid"></div>
+            </div>
+        </div>
+        <div class="setup-row" style="margin-top: 15px;">
+            <!-- 4. QUITARSE -->
+            <div class="setup-col">
+                <h3 id="setup-undress-title">🔻 QUITARSE</h3>
+                <div class="grid-container" id="setup-undress-grid"></div>
+            </div>
+            <!-- 5. PONERSE -->
+            <div class="setup-col">
+                <h3 id="setup-dress-title">🔺 PONERSE</h3>
+                <div class="grid-container" id="setup-dress-grid"></div>
+            </div>
+            <!-- 6. MOCHILA -->
+            <div class="setup-col">
+                <h3 id="setup-backpack-title">🎒 MOCHILA</h3>
+                <div class="grid-container" id="setup-backpack-grid"></div>
+            </div>
+        </div>
+
+        <button class="btn" onclick="startGame()">¡COMENZAR!</button>
+    </section>
+
+    <!-- 3. TIDY PHASE -->
+    <section id="screen-tidy" class="screen">
+        <h2 id="tidy-title">FASE 1: ORDENAR</h2>
+        <div class="message-area" id="tidy-msg">Mensaje de orden</div>
+        <div class="grid-container" id="tidy-grid"></div>
+    </section>
+
+    <!-- 4. BREAKFAST PHASE -->
+    <section id="screen-breakfast" class="screen">
+        <h2 id="breakfast-title">FASE 2: DESAYUNO</h2>
+        <div class="message-area" id="breakfast-msg">Mensaje de desayuno</div>
+        <div class="grid-container" id="breakfast-grid"></div>
+    </section>
+
+    <!-- 5. TEETH PHASE -->
+    <section id="screen-teeth" class="screen">
+        <h2 id="teeth-title">FASE 3: DIENTES</h2>
+        <div class="message-area" id="teeth-msg">Mensaje de dientes</div>
+        <div class="grid-container" id="teeth-grid"></div>
+    </section>
+
+    <!-- 6. UNDRESS PHASE -->
+    <section id="screen-undress" class="screen">
+        <h2 id="undress-title">FASE 4: QUITARSE</h2>
+        <div class="message-area" id="undress-msg">Mensaje de quitarse</div>
+        <div class="grid-container" id="undress-grid"></div>
+    </section>
+
+    <!-- 7. DRESS PHASE -->
+    <section id="screen-dress" class="screen">
+        <h2 id="dress-title">FASE 5: PONERSE</h2>
+        <div class="message-area" id="dress-msg">Mensaje de ponerse</div>
+        <div class="grid-container" id="dress-grid"></div>
+    </section>
+
+    <!-- 8. BACKPACK PHASE -->
+    <section id="screen-backpack" class="screen">
+        <h2 id="backpack-title">FASE 6: MOCHILA</h2>
+        <div class="message-area" id="backpack-msg">Mensaje de mochila</div>
+        <div class="grid-container" id="backpack-grid"></div>
+    </section>
+
+    <!-- 5. SUCCESS PHASE -->
+    <section id="screen-success" class="screen">
+        <h1 style="color:var(--success); font-size: 2.5rem; margin-top: 40px;">¡COMPLETADO!</h1>
+        <div class="big-icon" id="success-icon">🏆</div>
+        <div style="font-size: 3rem; color: var(--accent); padding: 20px;" id="final-score">0 PUNTOS</div>
+        <p style="font-size: 1.4rem;" id="success-msg">¡Gran trabajo!</p>
+        <button class="btn" onclick="location.reload()">Jugar de Nuevo</button>
+    </section>
+
+    <canvas id="confetti"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:100;"></canvas>
+
+    <script>
+        // --- DATA ---
+        const catalog = [
+            // ROPA / UNDRESS / DRESS
+            { id: 'calzoncillos', name: 'Calzoncillos', icon: '🩲', type: 'clothes' },
+            { id: 'braguitas', name: 'Braguitas', icon: '🩲', type: 'clothes' },
+            { id: 'calcetines', name: 'Calcetines', icon: '🧦', type: 'clothes' },
+            { id: 'camiseta', name: 'Camiseta', icon: '👕', type: 'clothes' },
+            { id: 'pantalon', name: 'Pantalón', icon: '👖', type: 'clothes' },
+            { id: 'zapatos', name: 'Zapatos', icon: '👟', type: 'clothes' },
+            { id: 'zapatillas', name: 'Zapatillas', icon: '👟', type: 'clothes' },
+            { id: 'chaqueta', name: 'Chaqueta', icon: '🧥', type: 'clothes' },
+            { id: 'jersey', name: 'Jersey', icon: '🧥', type: 'clothes' },
+            { id: 'pijama_camiseta', name: 'Camiseta Pijama', icon: '👕', type: 'clothes' },
+            { id: 'pijama_pantalon', name: 'Pantalón Pijama', icon: '🩳', type: 'clothes' },
+            { id: 'pijama', name: 'Pijama Entero', icon: '👘', type: 'clothes' },
+            { id: 'vestido', name: 'Vestido', icon: '👗', type: 'clothes' },
+            { id: 'abrigo', name: 'Abrigo', icon: '🧥', type: 'clothes' },
+            { id: 'gorro', name: 'Gorro', icon: '🧢', type: 'clothes' },
+            { id: 'bufanda', name: 'Bufanda', icon: '🧣', type: 'clothes' },
+
+            // HABITACIÓN / TIDY
+            { id: 'hacer_cama', name: 'Hacer Cama', icon: '🛏️', type: 'tidy' },
+            { id: 'recoger_juguetes', name: 'Juguetes', icon: '🧸', type: 'tidy' },
+            { id: 'guardar_pijama', name: 'Guardar Pijama', icon: '👚', type: 'tidy' },
+            { id: 'abrir_persiana', name: 'Abrir Persiana', icon: '☀️', type: 'tidy' },
+
+            // DESAYUNO / BREAKFAST
+            { id: 'leche', name: 'Leche', icon: '🥛', type: 'breakfast' },
+            { id: 'tostadas', name: 'Tostadas', icon: '🍞', type: 'breakfast' },
+            { id: 'cereales', name: 'Cereales', icon: '🥣', type: 'breakfast' },
+            { id: 'fruta', name: 'Fruta', icon: '🍎', type: 'breakfast' },
+            { id: 'zumo', name: 'Zumo', icon: '🧃', type: 'breakfast' },
+            { id: 'galletas', name: 'Galletas', icon: '🍪', type: 'breakfast' },
+
+            // DIENTES / TEETH
+            { id: 'cepillo', name: 'Cepillo', icon: '🪥', type: 'teeth' },
+            { id: 'pasta', name: 'Pasta', icon: '🧴', type: 'teeth' },
+            { id: 'lavar_cara', name: 'Lavar Cara', icon: '💧', type: 'teeth' },
+            { id: 'peine', name: 'Peinarse', icon: '💆', type: 'teeth' },
+            { id: 'colonia', name: 'Colonia', icon: '✨', type: 'teeth' },
+
+            // MOCHILA / BACKPACK
+            { id: 'agua', name: 'Agua', icon: '💧', type: 'backpack' },
+            { id: 'almuerzo', name: 'Almuerzo', icon: '🥪', type: 'backpack' },
+            { id: 'agenda', name: 'Agenda', icon: '📓', type: 'backpack' },
+            { id: 'libros', name: 'Libros', icon: '📚', type: 'backpack' },
+            { id: 'estuche', name: 'Estuche', icon: '✏️', type: 'backpack' },
+            { id: 'juguete_cole', name: 'Juguete Cole', icon: '🎮', type: 'backpack' }
+        ];
+
+        // --- THEME CONFIG (EXTENDED) ---
+        const THEMES = {
+            SPACE: {
+                class: 'theme-space',
+                title: 'MISIÓN ESPACIAL',
+                icon: '🚀',
+                scoreIcon: '⭐',
+                texts: {
+                    setup: 'CONFIGURAR NAVE',
+                    undressTitle: 'DESPEGUE (Quitando Traje)',
+                    dressTitle: 'TRAJE ESPACIAL',
+                    tidyTitle: 'MANTENIMIENTO NAVE',
+                    breakfastTitle: 'COMBUSTIBLE',
+                    teethTitle: 'LIMPIEZA SENSORES',
+                    backpackTitle: 'KIT DE SUPERVIVENCIA',
+
+                    undressMsg: 'Quítate la ropa terrestre para despegar.',
+                    dressMsg: 'Ponte tu traje espacial de hoy.',
+                    tidyMsg: 'Prepara la cabina para el lanzamiento.',
+                    breakfastMsg: 'Recarga energía para el viaje.',
+                    teethMsg: 'Limpia los sensores de comunicación.',
+                    backpackMsg: 'Carga los suministros en la nave.',
+
+                    successMsg: '¡Misión cumplida, Comandante!',
+                    successIcon: '🪐'
+                }
+            },
+            FOREST: {
+                class: 'theme-forest',
+                title: 'AVENTURA BOSQUE',
+                icon: '🌲',
+                scoreIcon: '🍂',
+                texts: {
+                    setup: 'PREPARAR VIAJE',
+                    undressTitle: 'SALIR DEL SACO',
+                    dressTitle: 'ROPA DE CAMPO',
+                    tidyTitle: 'LIMPIAR CAMPAMENTO',
+                    breakfastTitle: 'COMIDA DEL BOSQUE',
+                    teethTitle: 'LAVARSE EN EL RÍO',
+                    backpackTitle: 'MOCHILA EXPLORADOR',
+
+                    undressMsg: 'Quítate el pijama, ¡el sol ya salió!',
+                    dressMsg: 'Vístete para explorar el bosque.',
+                    tidyMsg: 'Deja el campamento ordenado.',
+                    breakfastMsg: 'Desayuna fuerte para la caminata.',
+                    teethMsg: 'Lávate con el agua fresca del río.',
+                    backpackMsg: 'Prepara todo para la excursión.',
+
+                    successMsg: '¡Has encontrado el árbol sabio!',
+                    successIcon: '⛺'
+                }
+            },
+            PIRATE: {
+                class: 'theme-pirate',
+                title: 'TESORO PIRATA',
+                icon: '🏴‍☠️',
+                scoreIcon: '💰',
+                texts: {
+                    setup: 'MISIÓN CAPITÁN',
+                    undressTitle: 'LEVAR ANCLAS',
+                    dressTitle: 'TRAJE DE PIRATA',
+                    tidyTitle: 'LIMPIAR CUBIERTA',
+                    breakfastTitle: 'RON Y GALLETAS',
+                    teethTitle: 'DIENTES BRILLANTES',
+                    backpackTitle: 'SACO DEL TESORO',
+
+                    undressMsg: '¡Fuera ropa de grumete, a navegar!',
+                    dressMsg: '¡Ponte tu ropa de Capitán!',
+                    tidyMsg: '¡A fregar la cubierta, marineros!',
+                    breakfastMsg: 'Come antes de buscar el tesoro.',
+                    teethMsg: '¡Esos dientes tienen que brillar como el oro!',
+                    backpackMsg: 'Guarda lo necesario en el cofre.',
+
+                    successMsg: '¡Tesoro encontrado! ¡Rey del mar!',
+                    successIcon: '💎'
+                }
+            },
+            JUNGLE: {
+                class: 'theme-jungle',
+                title: 'EXPEDICIÓN SELVA',
+                icon: '🦁',
+                scoreIcon: '🍌',
+                texts: {
+                    setup: 'PLAN DE SAFARI',
+                    undressTitle: 'DESPERTAR EN LA SELVA',
+                    dressTitle: 'ROPA DE CAMUFLAJE',
+                    tidyTitle: 'ORDENAR TIENDA',
+                    breakfastTitle: 'FRUTOS TROPICALES',
+                    teethTitle: 'SONRISA SALVAJE',
+                    backpackTitle: 'EQUIPO DE RASTREO',
+
+                    undressMsg: 'Quítate la ropa de dormir.',
+                    dressMsg: 'Vístete para ver a los leones.',
+                    tidyMsg: 'Deja la tienda lista para volver.',
+                    breakfastMsg: 'Come fruta para tener fuerza.',
+                    teethMsg: 'Lávate para rugir mejor.',
+                    backpackMsg: 'Prepara el equipo de investigación.',
+
+                    successMsg: '¡Eres el Rey de la Selva!',
+                    successIcon: '🐾'
+                }
+            },
+            DINO: {
+                class: 'theme-dino',
+                title: 'MUNDO JURÁSICO',
+                icon: '🦖',
+                scoreIcon: '🦴',
+                texts: {
+                    setup: 'BASE JURÁSICA',
+                    undressTitle: 'ESCAPAR DE LA CUEVA',
+                    dressTitle: 'PIEL DE DINOSAURIO',
+                    tidyTitle: 'ORDENAR NIDO',
+                    breakfastTitle: 'COMIDA HERBÍVORA',
+                    teethTitle: 'DIENTES DE T-REX',
+                    backpackTitle: 'KIT DE FÓSILES',
+
+                    undressMsg: '¡Sal del nido, pequeño dino!',
+                    dressMsg: 'Ponte tu equipo de paleontólogo.',
+                    tidyMsg: 'Deja el nido limpio y ordenado.',
+                    breakfastMsg: 'Come hojas y agua fresca.',
+                    teethMsg: '¡Afila esos dientes!',
+                    backpackMsg: 'Lleva tus herramientas de excavación.',
+
+                    successMsg: '¡Has descubierto un T-REX!',
+                    successIcon: '🌋'
+                }
+            },
+            RACING: {
+                class: 'theme-racing',
+                title: 'GRAN PREMIO',
+                icon: '🏎️',
+                scoreIcon: '🏁',
+                texts: {
+                    setup: 'TALLER',
+                    undressTitle: 'CAMBIO DE RUEDAS',
+                    dressTitle: 'MONO DE PILOTO',
+                    tidyTitle: 'LIMPIAR TALLER',
+                    breakfastTitle: 'GASOLINA SUPER',
+                    teethTitle: 'PULIR CARROCERÍA',
+                    backpackTitle: 'CAJA DE HERRAMIENTAS',
+
+                    undressMsg: 'Cámbiate rápido, ¡el equipo te espera!',
+                    dressMsg: 'Ponte el traje ignífugo de piloto.',
+                    tidyMsg: 'Deja el taller impecable.',
+                    breakfastMsg: 'Llena el depósito a tope.',
+                    teethMsg: 'Saca brillo a esa sonrisa.',
+                    backpackMsg: 'Prepara las herramientas para la carrera.',
+
+                    successMsg: '¡Pole Position! ¡Campeón!',
+                    successIcon: '🏆'
+                }
+            },
+            HERO: {
+                class: 'theme-hero',
+                title: 'SUPER HÉROES',
+                icon: '🦸',
+                scoreIcon: '⚡',
+                texts: {
+                    setup: 'LA BATCUEVA',
+                    undressTitle: 'IDENTIDAD SECRETA',
+                    dressTitle: 'SUPERTRAJE',
+                    tidyTitle: 'ORDENAR GUARIDA',
+                    breakfastTitle: 'SUPER VITAMINAS',
+                    teethTitle: 'RAYOS LIMPIADORES',
+                    backpackTitle: 'GADGETS',
+
+                    undressMsg: 'Deja tu ropa de civil.',
+                    dressMsg: '¡Ponte tu capa y salva la ciudad!',
+                    tidyMsg: 'Mantén secreta tu guarida.',
+                    breakfastMsg: 'Toma tus superalimentos.',
+                    teethMsg: '¡Sonrisa deslumbrante activada!',
+                    backpackMsg: 'Carga tus gadgets secretos.',
+
+                    successMsg: '¡La ciudad está a salvo gracias a ti!',
+                    successIcon: '💥'
+                }
+            }
+        };
+
+        // --- STATE ---
+        // Defaults
+        let selectedTidy = new Set(['hacer_cama', 'abrir_persiana']);
+        let selectedBreakfast = new Set(['leche', 'cereales']);
+        let selectedTeeth = new Set(['cepillo', 'pasta', 'lavar_cara']);
+        let selectedUndress = new Set(['pijama_camiseta', 'pijama_pantalon']);
+        let selectedDress = new Set(['calzoncillos', 'camiseta', 'pantalon']);
+        let selectedBackpack = new Set(['agua', 'almuerzo']);
+
+        let state = {
+            phase: 'ADVENTURE_SELECT',
+            tidyProgress: new Set(),
+            breakfastProgress: new Set(),
+            teethProgress: new Set(),
+            undressProgress: new Set(),
+            dressProgress: new Set(),
+            backpackProgress: new Set(),
+            score: 0,
+            theme: 'SPACE'
+        };
+
+        // --- FUNCTIONS ---
+
+        function selectAdventure(themeKey) {
+            state.theme = themeKey;
+            const config = THEMES[themeKey];
+
+            // Apply Theme Class
+            document.body.className = config.class;
+
+            // Update Static Texts
+            document.getElementById('header-title').innerText = config.title;
+            document.getElementById('score-icon').innerText = config.scoreIcon;
+            document.getElementById('setup-title').innerText = config.texts.setup;
+
+            document.getElementById('tidy-title').innerText = config.texts.tidyTitle;
+            document.getElementById('breakfast-title').innerText = config.texts.breakfastTitle;
+            document.getElementById('teeth-title').innerText = config.texts.teethTitle;
+            document.getElementById('undress-title').innerText = config.texts.undressTitle;
+            document.getElementById('dress-title').innerText = config.texts.dressTitle;
+            document.getElementById('backpack-title').innerText = config.texts.backpackTitle;
+
+            document.getElementById('tidy-msg').innerText = config.texts.tidyMsg;
+            document.getElementById('breakfast-msg').innerText = config.texts.breakfastMsg;
+            document.getElementById('teeth-msg').innerText = config.texts.teethMsg;
+            document.getElementById('undress-msg').innerText = config.texts.undressMsg;
+            document.getElementById('dress-msg').innerText = config.texts.dressMsg;
+            document.getElementById('backpack-msg').innerText = config.texts.backpackMsg;
+
+            document.getElementById('success-msg').innerText = config.texts.successMsg;
+            document.getElementById('success-icon').innerText = config.texts.successIcon;
+
+            // Show Header
+            document.getElementById('main-header').classList.remove('hidden');
+
+            switchPhase('SETUP');
+        }
+
+        function createCard(item, onClick, isSelected, isSetup, isDone) {
+            const div = document.createElement('div');
+            div.className = `card ${isSelected ? 'selected' : ''} ${isDone ? 'done' : ''}`;
+
+            if (isSetup) {
+                div.onclick = () => { onClick(item); };
+            } else {
+                div.onclick = (e) => {
+                    if (!isDone) onClick(item, e.clientX, e.clientY);
+                };
+            }
+
+            div.innerHTML = `
+            <div class="icon-circle">${item.icon}</div>
+            <div class="card-label">${item.name}</div>
+        `;
+            return div;
+        }
+
+        function renderSetup() {
+            renderSetupGrid('setup-tidy-grid', 'tidy', selectedTidy);
+            renderSetupGrid('setup-breakfast-grid', 'breakfast', selectedBreakfast);
+            renderSetupGrid('setup-teeth-grid', 'teeth', selectedTeeth);
+
+            // For clothes, we check 'clothes' type but we might want to separate them visually if we had sub-types
+            // But here we rely on the manual Sets. 
+            // In the catalog, type='clothes' covers both undress/dress items (often the same pool).
+            // But 'pijama stuff' is usually undress, and 'street clothes' is dress. 
+            // The user manually selects what goes where.
+            // So we just iterate the full catalog or filter by type?
+            // Actually, for Setup, we want to show RELEVANT items for that category.
+
+            // Filter catalog for each section to avoid showing 'toast' in 'backpack' selection?
+            // Yes, let's filter by type for the helpers.
+
+            renderSetupGrid('setup-undress-grid', 'clothes', selectedUndress);
+            renderSetupGrid('setup-dress-grid', 'clothes', selectedDress);
+            renderSetupGrid('setup-backpack-grid', 'backpack', selectedBackpack);
+        }
+
+        function renderSetupGrid(gridId, typeFilter, setObj) {
+            const grid = document.getElementById(gridId);
+            grid.innerHTML = '';
+
+            // Special case for 'clothes' which feeds two lists (undress/dress)
+            // Ideally we might want to filter 'pijama' stuff for undress and others for dress, 
+            // but for simplicity let's show all 'clothes' type or relevant items.
+            // Let's rely on the 'type' property added to catalog.
+
+            const items = catalog.filter(i => i.type === typeFilter || (typeFilter === 'clothes' && i.type === 'clothes'));
+
+            items.forEach(item => {
+                const card = createCard(item, () => {
+                    toggleSet(setObj, item.id);
+                    // Re-render only this grid or button state if needed
+                    // For simplicity, just toggle class active/inactive? 
+                    // But createCard logic relies on full re-render or manual class toggle.
+                    // Let's do a trick: toggle the class manually to avoid full re-render lag
+                    // But we called 'renderSetup()' recursively before. 
+                    // Let's just re-render this grid.
+                    renderSetupGrid(gridId, typeFilter, setObj);
+                }, setObj.has(item.id), true, false);
+                grid.appendChild(card);
+            });
+        }
+
+        function toggleSet(set, id) {
+            set.has(id) ? set.delete(id) : set.add(id);
+        }
+
+        function renderGame(gridId, sourceSet, progressSet, handler) {
+            const grid = document.getElementById(gridId);
+            grid.innerHTML = '';
+
+            Array.from(sourceSet).map(id => catalog.find(i => i.id === id)).forEach(item => {
+                grid.appendChild(createCard(
+                    item,
+                    handler,
+                    false,
+                    false,
+                    progressSet.has(item.id)
+                ));
+            });
+        }
+
+        function switchPhase(newPhase) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            state.phase = newPhase;
+
+            // Helper to activate screen
+            const s = (id) => document.getElementById(id).classList.add('active');
+
+            if (newPhase === 'SETUP') {
+                s('screen-setup');
+                renderSetup();
+            }
+            else if (newPhase === 'TIDY') {
+                s('screen-tidy');
+                renderGame('tidy-grid', selectedTidy, state.tidyProgress, handleGameClick);
+                speak(THEMES[state.theme].texts.tidyMsg);
+            }
+            else if (newPhase === 'BREAKFAST') {
+                s('screen-breakfast');
+                renderGame('breakfast-grid', selectedBreakfast, state.breakfastProgress, handleGameClick);
+                speak(THEMES[state.theme].texts.breakfastMsg);
+            }
+            else if (newPhase === 'TEETH') {
+                s('screen-teeth');
+                renderGame('teeth-grid', selectedTeeth, state.teethProgress, handleGameClick);
+                speak(THEMES[state.theme].texts.teethMsg);
+            }
+            else if (newPhase === 'UNDRESS') {
+                s('screen-undress');
+                renderGame('undress-grid', selectedUndress, state.undressProgress, handleGameClick);
+                speak(THEMES[state.theme].texts.undressMsg);
+            }
+            else if (newPhase === 'DRESS') {
+                s('screen-dress');
+                renderGame('dress-grid', selectedDress, state.dressProgress, handleGameClick);
+                speak(THEMES[state.theme].texts.dressMsg);
+            }
+            else if (newPhase === 'BACKPACK') {
+                s('screen-backpack');
+                renderGame('backpack-grid', selectedBackpack, state.backpackProgress, handleGameClick);
+                speak(THEMES[state.theme].texts.backpackMsg);
+            }
+            else if (newPhase === 'SUCCESS') {
+                s('screen-success');
+                document.getElementById('final-score').innerText = state.score + " PUNTOS";
+                startConfetti();
+                speak(THEMES[state.theme].texts.successMsg);
+            }
+        }
+
+        function startGame() {
+            // Reset Progress
+            state.tidyProgress = new Set();
+            state.breakfastProgress = new Set();
+            state.teethProgress = new Set();
+            state.undressProgress = new Set();
+            state.dressProgress = new Set();
+            state.backpackProgress = new Set();
+
+            state.score = 0;
+            document.getElementById('score-display').innerText = '0';
+
+            // Find first phase with items
+            advancePhase();
+        }
+
+        function advancePhase() {
+            // Priority Order: TIDY -> BREAKFAST -> TEETH -> UNDRESS -> DRESS -> BACKPACK -> SUCCESS
+            // We check which is the *current* phase to decide the *next*.
+            // If phase is ADVENTURE_SELECT or SETUP, we start from top.
+
+            const p = state.phase;
+
+            if (p === 'SETUP' || p === 'ADVENTURE_SELECT') {
+                if (selectedTidy.size > 0) return switchPhase('TIDY');
+                if (selectedBreakfast.size > 0) return switchPhase('BREAKFAST');
+                if (selectedTeeth.size > 0) return switchPhase('TEETH');
+                if (selectedUndress.size > 0) return switchPhase('UNDRESS');
+                if (selectedDress.size > 0) return switchPhase('DRESS');
+                if (selectedBackpack.size > 0) return switchPhase('BACKPACK');
+                return switchPhase('SUCCESS'); // Nothing selected?
+            }
+
+            if (p === 'TIDY') {
+                if (selectedBreakfast.size > 0) return switchPhase('BREAKFAST');
+                if (selectedTeeth.size > 0) return switchPhase('TEETH');
+                // ... fallthrough
+            }
+            // Check from Breakfast onwards
+            if (p === 'TIDY' || p === 'BREAKFAST') {
+                if (selectedTeeth.size > 0) return switchPhase('TEETH');
+            }
+            // Check from Teeth onwards
+            if (p === 'TIDY' || p === 'BREAKFAST' || p === 'TEETH') {
+                if (selectedUndress.size > 0) return switchPhase('UNDRESS');
+            }
+            // ...
+
+            // Ideally, simpler logic:
+            const phases = [
+                { id: 'TIDY', set: selectedTidy },
+                { id: 'BREAKFAST', set: selectedBreakfast },
+                { id: 'TEETH', set: selectedTeeth },
+                { id: 'UNDRESS', set: selectedUndress },
+                { id: 'DRESS', set: selectedDress },
+                { id: 'BACKPACK', set: selectedBackpack }
+            ];
+
+            let currentIndex = -1;
+            if (p !== 'SETUP' && p !== 'ADVENTURE_SELECT') {
+                currentIndex = phases.findIndex(x => x.id === p);
+            }
+
+            // Find next valid
+            for (let i = currentIndex + 1; i < phases.length; i++) {
+                if (phases[i].set.size > 0) {
+                    return switchPhase(phases[i].id);
+                }
+            }
+
+            switchPhase('SUCCESS');
+        }
+
+        function handleGameClick(item, x, y) {
+            let currentSet, sourceSet;
+
+            switch (state.phase) {
+                case 'TIDY': currentSet = state.tidyProgress; sourceSet = selectedTidy; break;
+                case 'BREAKFAST': currentSet = state.breakfastProgress; sourceSet = selectedBreakfast; break;
+                case 'TEETH': currentSet = state.teethProgress; sourceSet = selectedTeeth; break;
+                case 'UNDRESS': currentSet = state.undressProgress; sourceSet = selectedUndress; break;
+                case 'DRESS': currentSet = state.dressProgress; sourceSet = selectedDress; break;
+                case 'BACKPACK': currentSet = state.backpackProgress; sourceSet = selectedBackpack; break;
+            }
+
+            if (!currentSet.has(item.id)) {
+                currentSet.add(item.id);
+                addScore(100, x, y);
+
+                renderGame(state.phase.toLowerCase() + '-grid', sourceSet, currentSet, handleGameClick);
+                checkPhaseComplete();
+            }
+        }
+
+        function addScore(amount, x, y) {
+            state.score += amount;
+            document.getElementById('score-display').innerText = state.score;
+
+            const pop = document.createElement('div');
+            pop.className = 'points-pop';
+            pop.innerText = `+${amount}`;
+            pop.style.left = (x || window.innerWidth / 2) + 'px';
+            pop.style.top = (y || window.innerHeight / 2) + 'px';
+            document.body.appendChild(pop);
+            setTimeout(() => pop.remove(), 800);
+
+            if (navigator.vibrate) navigator.vibrate(20);
+        }
+
+        function checkPhaseComplete() {
+            let progress, total;
+            switch (state.phase) {
+                case 'TIDY': progress = state.tidyProgress.size; total = selectedTidy.size; break;
+                case 'BREAKFAST': progress = state.breakfastProgress.size; total = selectedBreakfast.size; break;
+                case 'TEETH': progress = state.teethProgress.size; total = selectedTeeth.size; break;
+                case 'UNDRESS': progress = state.undressProgress.size; total = selectedUndress.size; break;
+                case 'DRESS': progress = state.dressProgress.size; total = selectedDress.size; break;
+                case 'BACKPACK': progress = state.backpackProgress.size; total = selectedBackpack.size; break;
+            }
+
+            if (progress >= total) {
+                setTimeout(() => {
+                    advancePhase();
+                }, 1000);
+            }
+        }
+
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                const u = new SpeechSynthesisUtterance(text);
+                u.lang = 'es-ES';
+                window.speechSynthesis.speak(u);
+            }
+        }
+
+        // --- CONFETTI ---
+        function startConfetti() {
+            const canvas = document.getElementById('confetti');
+            const ctx = canvas.getContext('2d');
+
+            // Resize canvas
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const colors = state.theme === 'FOREST' ? ['#66BB6A', '#FFA726', '#FFEB3B']
+                : state.theme === 'PIRATE' ? ['#FFD700', '#D32F2F', '#FFFFFF']
+                    : state.theme === 'JUNGLE' ? ['#ffab00', '#64dd17', '#ffd600']
+                        : state.theme === 'DINO' ? ['#ff5722', '#8d6e63', '#ffcc80']
+                            : state.theme === 'RACING' ? ['#d50000', '#000000', '#ffffff']
+                                : ['#F72585', '#4CC9F0', '#FFD93D']; // Space/Hero/Default
+
+            const particles = Array.from({ length: 100 }, () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                size: Math.random() * 8 + 4,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                speed: Math.random() * 5 + 2
+            }));
+
+            function loop() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    p.y += p.speed;
+                    if (p.y > canvas.height) p.y = -10;
+                    ctx.fillStyle = p.color;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                requestAnimationFrame(loop);
+            }
+            loop();
+        }
+
+    </script>
+</body>
+
+</html>
