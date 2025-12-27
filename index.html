@@ -506,6 +506,160 @@
             animation: bounce 2s infinite;
         }
 
+        /* SETUP MISSION BOARD */
+        .mission-board {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            height: 60vh;
+            min-height: 400px;
+        }
+
+        .mission-timeline {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            padding: 15px;
+            overflow-y: auto;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-width: 250px;
+        }
+
+        .mission-editor {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Responsive Mobile Fix */
+        @media (max-width: 768px) {
+            .mission-board {
+                flex-direction: column;
+                height: auto;
+                min-height: 100%;
+            }
+
+            .mission-timeline {
+                flex: none;
+                height: auto;
+                min-width: 100%;
+            }
+
+            .mission-editor {
+                flex: 1;
+                min-height: 400px;
+            }
+
+            #screen-setup {
+                overflow-y: auto;
+                padding-top: 80px;
+            }
+
+            /* Mobile Button improvements */
+            .phase-controls {
+                gap: 10px;
+            }
+
+            .ctrl-btn {
+                padding: 12px 15px;
+                /* Larger touch target */
+                font-size: 1.3rem;
+                background: rgba(255, 255, 255, 0.2);
+                /* More visible */
+                margin-left: 5px;
+                border-radius: 8px;
+                /* Softer edges */
+            }
+        }
+
+        .phase-card {
+            background: var(--glass);
+            border-radius: 15px;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            cursor: grab;
+        }
+
+        .phase-card:active {
+            cursor: grabbing;
+        }
+
+        .phase-card.active-edit {
+            border-color: var(--accent);
+            background: rgba(255, 217, 61, 0.1);
+        }
+
+        .phase-card.dragging {
+            opacity: 0.5;
+            border: 2px dashed #FFD700;
+        }
+
+        .phase-card.drag-over {
+            border-top: 2px solid #FFD700;
+        }
+
+        .phase-card.disabled {
+            opacity: 0.5;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .phase-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-head);
+            font-size: 1.1rem;
+        }
+
+        .phase-controls {
+            display: flex;
+            gap: 5px;
+        }
+
+        .ctrl-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .ctrl-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .ctrl-btn.active {
+            color: var(--success);
+        }
+
+        .editor-header {
+            font-family: var(--font-head);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            border-bottom: 2px solid var(--glass-border);
+            padding-bottom: 10px;
+        }
+
+        .editor-grid {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
         @keyframes bounce {
 
             0%,
@@ -578,42 +732,25 @@
         </div>
     </section>
 
-    <!-- 2. SETUP PHASE -->
+    <!-- 2. SETUP PHASE (MISSION BOARD) -->
     <section id="screen-setup" class="screen">
-        <h2 id="setup-title">PREPARAR EQUIPO</h2>
+        <h2 id="setup-title">PLAN DE MISIÓN</h2>
+        <p style="text-align:center; opacity:0.8; margin-top:-10px;">Configura tu rutina paso a paso</p>
 
-        <div class="setup-row">
-            <!-- 1. HABITACIÓN -->
-            <div class="setup-col">
-                <h3 id="setup-tidy-title">🛏️ HABITACIÓN</h3>
-                <div class="grid-container" id="setup-tidy-grid"></div>
+        <div class="mission-board">
+            <!-- LEFT: TIMELINE -->
+            <div class="mission-timeline" id="mission-timeline">
+                <!-- Phases injected by JS -->
             </div>
-            <!-- 2. DESAYUNO -->
-            <div class="setup-col">
-                <h3 id="setup-breakfast-title">🥣 DESAYUNO</h3>
-                <div class="grid-container" id="setup-breakfast-grid"></div>
-            </div>
-            <!-- 3. DIENTES -->
-            <div class="setup-col">
-                <h3 id="setup-teeth-title">🪥 ASEO</h3>
-                <div class="grid-container" id="setup-teeth-grid"></div>
-            </div>
-        </div>
-        <div class="setup-row" style="margin-top: 15px;">
-            <!-- 4. QUITARSE -->
-            <div class="setup-col">
-                <h3 id="setup-undress-title">🔻 QUITARSE</h3>
-                <div class="grid-container" id="setup-undress-grid"></div>
-            </div>
-            <!-- 5. PONERSE -->
-            <div class="setup-col">
-                <h3 id="setup-dress-title">🔺 PONERSE</h3>
-                <div class="grid-container" id="setup-dress-grid"></div>
-            </div>
-            <!-- 6. MOCHILA -->
-            <div class="setup-col">
-                <h3 id="setup-backpack-title">🎒 MOCHILA</h3>
-                <div class="grid-container" id="setup-backpack-grid"></div>
+
+            <!-- RIGHT: EDITOR -->
+            <div class="mission-editor">
+                <div class="editor-header" id="editor-title">SELECCIONA UNA FASE</div>
+                <div class="grid-container editor-grid" id="editor-grid">
+                    <p style="text-align:center; width:100%; margin-top:50px; opacity:0.5;">
+                        👈 Toca el lápiz en una fase para editar sus objetos
+                    </p>
+                </div>
             </div>
         </div>
 
@@ -700,6 +837,8 @@
             { id: 'recoger_juguetes', name: 'Juguetes', icon: '🧸', type: 'tidy' },
             { id: 'guardar_pijama', name: 'Guardar Pijama', icon: '👚', type: 'tidy' },
             { id: 'abrir_persiana', name: 'Abrir Persiana', icon: '☀️', type: 'tidy' },
+            { id: 'ropa_sucia', name: 'Ropa Sucia', icon: '🧺', type: 'tidy' },
+            { id: 'regar_plantas', name: 'Regar Plantas', icon: '🪴', type: 'tidy' },
 
             // DESAYUNO / BREAKFAST
             { id: 'leche', name: 'Leche', icon: '🥛', type: 'breakfast' },
@@ -708,6 +847,11 @@
             { id: 'fruta', name: 'Fruta', icon: '🍎', type: 'breakfast' },
             { id: 'zumo', name: 'Zumo', icon: '🧃', type: 'breakfast' },
             { id: 'galletas', name: 'Galletas', icon: '🍪', type: 'breakfast' },
+            { id: 'yogur', name: 'Yogur', icon: '🍦', type: 'breakfast' },
+            { id: 'huevo', name: 'Huevo', icon: '🥚', type: 'breakfast' },
+            { id: 'sandwich', name: 'Sandwich', icon: '🥪', type: 'breakfast' },
+            { id: 'cubiertos', name: 'Cubiertos', icon: '🍴', type: 'breakfast' },
+            { id: 'servilleta', name: 'Servilleta', icon: '🧻', type: 'breakfast' },
 
             // DIENTES / TEETH
             { id: 'cepillo', name: 'Cepillo', icon: '🪥', type: 'teeth' },
@@ -715,6 +859,8 @@
             { id: 'lavar_cara', name: 'Lavar Cara', icon: '💧', type: 'teeth' },
             { id: 'peine', name: 'Peinarse', icon: '💆', type: 'teeth' },
             { id: 'colonia', name: 'Colonia', icon: '✨', type: 'teeth' },
+            { id: 'toalla', name: 'Toalla', icon: '🧖', type: 'teeth' },
+            { id: 'hilo_dental', name: 'Hilo Dental', icon: '🧵', type: 'teeth' },
 
             // MOCHILA / BACKPACK
             { id: 'agua', name: 'Agua', icon: '💧', type: 'backpack' },
@@ -722,7 +868,10 @@
             { id: 'agenda', name: 'Agenda', icon: '📓', type: 'backpack' },
             { id: 'libros', name: 'Libros', icon: '📚', type: 'backpack' },
             { id: 'estuche', name: 'Estuche', icon: '✏️', type: 'backpack' },
-            { id: 'juguete_cole', name: 'Juguete Cole', icon: '🎮', type: 'backpack' }
+            { id: 'juguete_cole', name: 'Juguete Cole', icon: '🎮', type: 'backpack' },
+            { id: 'mochila_deporte', name: 'Mochila Deporte', icon: '🎾', type: 'backpack' },
+            { id: 'crema_sol', name: 'Crema Sol', icon: '🧴', type: 'backpack' },
+            { id: 'gorra', name: 'Gorra', icon: '🧢', type: 'backpack' }
         ];
 
         // --- THEME CONFIG (EXTENDED) ---
@@ -913,6 +1062,11 @@
         let selectedDress = new Set(['calzoncillos', 'camiseta', 'pantalon']);
         let selectedBackpack = new Set(['agua', 'almuerzo']);
 
+        // New State for flexible flow
+        let routineOrder = ['TIDY', 'BREAKFAST', 'TEETH', 'UNDRESS', 'DRESS', 'BACKPACK'];
+        let activePhases = new Set(['TIDY', 'BREAKFAST', 'TEETH', 'UNDRESS', 'DRESS', 'BACKPACK']);
+        let editingPhase = null; // Currently editing this phase in Setup
+
         let state = {
             phase: 'ADVENTURE_SELECT',
             tidyProgress: new Set(),
@@ -923,6 +1077,16 @@
             backpackProgress: new Set(),
             score: 0,
             theme: 'SPACE'
+        };
+
+        // Helpers to map Phase ID to Set and Props
+        const PHASE_MAP = {
+            'TIDY': { set: selectedTidy, icon: '🛏️', label: 'Habitación', dataId: 'tidy' },
+            'BREAKFAST': { set: selectedBreakfast, icon: '🥣', label: 'Desayuno', dataId: 'breakfast' },
+            'TEETH': { set: selectedTeeth, icon: '🪥', label: 'Aseo', dataId: 'teeth' },
+            'UNDRESS': { set: selectedUndress, icon: '🔻', label: 'Quitarse', dataId: 'clothes' },
+            'DRESS': { set: selectedDress, icon: '🔺', label: 'Ponerse', dataId: 'clothes' },
+            'BACKPACK': { set: selectedBackpack, icon: '🎒', label: 'Mochila', dataId: 'backpack' }
         };
 
         // --- FUNCTIONS ---
@@ -937,7 +1101,9 @@
             // Update Static Texts
             document.getElementById('header-title').innerText = config.title;
             document.getElementById('score-icon').innerText = config.scoreIcon;
-            document.getElementById('setup-title').innerText = config.texts.setup;
+
+            // Setup title might be constant now, or theme flavor
+            // document.getElementById('setup-title').innerText = config.texts.setup; 
 
             document.getElementById('tidy-title').innerText = config.texts.tidyTitle;
             document.getElementById('breakfast-title').innerText = config.texts.breakfastTitle;
@@ -981,49 +1147,157 @@
             return div;
         }
 
+        // --- MISSION BOARD LOGIC ---
+
         function renderSetup() {
-            renderSetupGrid('setup-tidy-grid', 'tidy', selectedTidy);
-            renderSetupGrid('setup-breakfast-grid', 'breakfast', selectedBreakfast);
-            renderSetupGrid('setup-teeth-grid', 'teeth', selectedTeeth);
+            const container = document.getElementById('mission-timeline');
+            container.innerHTML = '';
 
-            // For clothes, we check 'clothes' type but we might want to separate them visually if we had sub-types
-            // But here we rely on the manual Sets. 
-            // In the catalog, type='clothes' covers both undress/dress items (often the same pool).
-            // But 'pijama stuff' is usually undress, and 'street clothes' is dress. 
-            // The user manually selects what goes where.
-            // So we just iterate the full catalog or filter by type?
-            // Actually, for Setup, we want to show RELEVANT items for that category.
+            routineOrder.forEach((phaseId, index) => {
+                const info = PHASE_MAP[phaseId];
+                const isActive = activePhases.has(phaseId);
+                const isEditing = editingPhase === phaseId;
 
-            // Filter catalog for each section to avoid showing 'toast' in 'backpack' selection?
-            // Yes, let's filter by type for the helpers.
+                const card = document.createElement('div');
+                card.className = `phase-card ${isActive ? '' : 'disabled'} ${isEditing ? 'active-edit' : ''}`;
 
-            renderSetupGrid('setup-undress-grid', 'clothes', selectedUndress);
-            renderSetupGrid('setup-dress-grid', 'clothes', selectedDress);
-            renderSetupGrid('setup-backpack-grid', 'backpack', selectedBackpack);
+                // DRAG AND DROP ATTRIBUTES
+                card.draggable = true;
+                card.dataset.index = index;
+
+                // Add DnD Listeners
+                card.addEventListener('dragstart', handleDragStart);
+                card.addEventListener('dragover', handleDragOver);
+                card.addEventListener('drop', handleDrop);
+                card.addEventListener('dragenter', handleDragEnter);
+                card.addEventListener('dragleave', handleDragLeave);
+
+                // HTML structure for the card
+                card.innerHTML = `
+                    <div class="phase-info" style="pointer-events: none;">
+                        <span>${index + 1}.</span>
+                        <span style="font-size:1.5rem">${info.icon}</span>
+                        <span>${info.label} (${info.set.size})</span>
+                    </div>
+                    <div class="phase-controls">
+                        <button class="ctrl-btn" onclick="movePhase(${index}, -1)">⬆️</button>
+                        <button class="ctrl-btn" onclick="movePhase(${index}, 1)">⬇️</button>
+                        <button class="ctrl-btn" onclick="togglePhase('${phaseId}')">${isActive ? '✅' : '❌'}</button>
+                        <button class="ctrl-btn ${isEditing ? 'active' : ''}" onclick="editPhase('${phaseId}')">✏️</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            // If we are editing a phase, render its grid
+            if (editingPhase && activePhases.has(editingPhase)) {
+                renderEditorGrid();
+            } else {
+                // If disabled or null, clear grid
+                document.getElementById('editor-grid').innerHTML = '<p style="text-align:center; width:100%; margin-top:50px; opacity:0.5;">👈 Selecciona ✏️ para editar</p>';
+                document.getElementById('editor-title').innerText = "PLANIFICADOR";
+            }
         }
 
-        function renderSetupGrid(gridId, typeFilter, setObj) {
-            const grid = document.getElementById(gridId);
+        // DnD Handlers
+        let dragSrcIndex = null;
+
+        function handleDragStart(e) {
+            this.style.opacity = '0.4';
+            dragSrcIndex = Number(this.dataset.index);
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', dragSrcIndex);
+            this.classList.add('dragging');
+        }
+
+        function handleDragOver(e) {
+            if (e.preventDefault) {
+                e.preventDefault(); // Necessary. Allows us to drop.
+            }
+            e.dataTransfer.dropEffect = 'move';
+            return false;
+        }
+
+        function handleDragEnter(e) {
+            this.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            this.classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            if (e.stopPropagation) {
+                e.stopPropagation(); // stops the browser from redirecting.
+            }
+
+            const targetIndex = Number(this.dataset.index);
+
+            // Don't do anything if dropping the same column we're dragging.
+            if (dragSrcIndex !== null && dragSrcIndex !== targetIndex) {
+                // Reorder array
+                const movedItem = routineOrder[dragSrcIndex];
+                routineOrder.splice(dragSrcIndex, 1); // Remove
+                routineOrder.splice(targetIndex, 0, movedItem); // Insert at new
+
+                renderSetup();
+            }
+
+            // Cleanup styles
+            document.querySelectorAll('.phase-card').forEach(col => {
+                col.classList.remove('drag-over');
+                col.classList.remove('dragging');
+                col.style.opacity = '1';
+            });
+
+            return false;
+        }
+
+        function movePhase(index, direction) {
+            const newIndex = index + direction;
+            if (newIndex < 0 || newIndex >= routineOrder.length) return;
+
+            // Swap
+            const temp = routineOrder[index];
+            routineOrder[index] = routineOrder[newIndex];
+            routineOrder[newIndex] = temp;
+
+            renderSetup();
+        }
+
+        function togglePhase(phaseId) {
+            if (activePhases.has(phaseId)) {
+                activePhases.delete(phaseId);
+                if (editingPhase === phaseId) editingPhase = null;
+            } else {
+                activePhases.add(phaseId);
+            }
+            renderSetup();
+        }
+
+        function editPhase(phaseId) {
+            if (!activePhases.has(phaseId)) return; // Can't edit disabled
+            editingPhase = phaseId;
+            renderSetup();
+        }
+
+        function renderEditorGrid() {
+            const phaseId = editingPhase;
+            const info = PHASE_MAP[phaseId];
+            const grid = document.getElementById('editor-grid');
+            const title = document.getElementById('editor-title');
+
+            title.innerText = `EDITAR: ${info.label.toUpperCase()}`;
             grid.innerHTML = '';
 
-            // Special case for 'clothes' which feeds two lists (undress/dress)
-            // Ideally we might want to filter 'pijama' stuff for undress and others for dress, 
-            // but for simplicity let's show all 'clothes' type or relevant items.
-            // Let's rely on the 'type' property added to catalog.
-
+            const typeFilter = info.dataId;
             const items = catalog.filter(i => i.type === typeFilter || (typeFilter === 'clothes' && i.type === 'clothes'));
 
             items.forEach(item => {
                 const card = createCard(item, () => {
-                    toggleSet(setObj, item.id);
-                    // Re-render only this grid or button state if needed
-                    // For simplicity, just toggle class active/inactive? 
-                    // But createCard logic relies on full re-render or manual class toggle.
-                    // Let's do a trick: toggle the class manually to avoid full re-render lag
-                    // But we called 'renderSetup()' recursively before. 
-                    // Let's just re-render this grid.
-                    renderSetupGrid(gridId, typeFilter, setObj);
-                }, setObj.has(item.id), true, false);
+                    toggleSet(info.set, item.id);
+                    renderSetup(); // Re-render to update counts and grid
+                }, info.set.has(item.id), true, false);
                 grid.appendChild(card);
             });
         }
@@ -1031,6 +1305,8 @@
         function toggleSet(set, id) {
             set.has(id) ? set.delete(id) : set.add(id);
         }
+
+        // --- GAME LOGIC ---
 
         function renderGame(gridId, sourceSet, progressSet, handler) {
             const grid = document.getElementById(gridId);
@@ -1058,41 +1334,36 @@
                 s('screen-setup');
                 renderSetup();
             }
-            else if (newPhase === 'TIDY') {
-                s('screen-tidy');
-                renderGame('tidy-grid', selectedTidy, state.tidyProgress, handleGameClick);
-                speak(THEMES[state.theme].texts.tidyMsg);
-            }
-            else if (newPhase === 'BREAKFAST') {
-                s('screen-breakfast');
-                renderGame('breakfast-grid', selectedBreakfast, state.breakfastProgress, handleGameClick);
-                speak(THEMES[state.theme].texts.breakfastMsg);
-            }
-            else if (newPhase === 'TEETH') {
-                s('screen-teeth');
-                renderGame('teeth-grid', selectedTeeth, state.teethProgress, handleGameClick);
-                speak(THEMES[state.theme].texts.teethMsg);
-            }
-            else if (newPhase === 'UNDRESS') {
-                s('screen-undress');
-                renderGame('undress-grid', selectedUndress, state.undressProgress, handleGameClick);
-                speak(THEMES[state.theme].texts.undressMsg);
-            }
-            else if (newPhase === 'DRESS') {
-                s('screen-dress');
-                renderGame('dress-grid', selectedDress, state.dressProgress, handleGameClick);
-                speak(THEMES[state.theme].texts.dressMsg);
-            }
-            else if (newPhase === 'BACKPACK') {
-                s('screen-backpack');
-                renderGame('backpack-grid', selectedBackpack, state.backpackProgress, handleGameClick);
-                speak(THEMES[state.theme].texts.backpackMsg);
-            }
             else if (newPhase === 'SUCCESS') {
                 s('screen-success');
                 document.getElementById('final-score').innerText = state.score + " PUNTOS";
                 startConfetti();
                 speak(THEMES[state.theme].texts.successMsg);
+            }
+            else {
+                // Generic handler for normal phases
+                // We need to map Phase ID to Screen ID
+                const screenId = 'screen-' + newPhase.toLowerCase();
+                const gridId = newPhase.toLowerCase() + '-grid';
+                const info = PHASE_MAP[newPhase];
+                const set = info.set;
+                const progress = state[newPhase.toLowerCase() + 'Progress'];
+                // Careful: state property names matching? 
+                // state.tidyProgress etc. yes.
+
+                const el = document.getElementById(screenId);
+                if (el) {
+                    el.classList.add('active');
+                    renderGame(gridId, set, progress, handleGameClick);
+
+                    // Texts? 
+                    // We need a map for texts too or dynamic property access
+                    // THEMES[state.theme].texts.tidyMsg
+                    // Let's create a key map
+                    const msgKey = newPhase.toLowerCase() + 'Msg';
+                    const msg = THEMES[state.theme].texts[msgKey];
+                    if (msg) speak(msg);
+                }
             }
         }
 
@@ -1108,61 +1379,28 @@
             state.score = 0;
             document.getElementById('score-display').innerText = '0';
 
-            // Find first phase with items
+            // Find first phase
             advancePhase();
         }
 
         function advancePhase() {
-            // Priority Order: TIDY -> BREAKFAST -> TEETH -> UNDRESS -> DRESS -> BACKPACK -> SUCCESS
-            // We check which is the *current* phase to decide the *next*.
-            // If phase is ADVENTURE_SELECT or SETUP, we start from top.
+            // Priority Order: Based on routineOrder and activePhases
 
-            const p = state.phase;
+            const currentPhase = state.phase;
 
-            if (p === 'SETUP' || p === 'ADVENTURE_SELECT') {
-                if (selectedTidy.size > 0) return switchPhase('TIDY');
-                if (selectedBreakfast.size > 0) return switchPhase('BREAKFAST');
-                if (selectedTeeth.size > 0) return switchPhase('TEETH');
-                if (selectedUndress.size > 0) return switchPhase('UNDRESS');
-                if (selectedDress.size > 0) return switchPhase('DRESS');
-                if (selectedBackpack.size > 0) return switchPhase('BACKPACK');
-                return switchPhase('SUCCESS'); // Nothing selected?
-            }
-
-            if (p === 'TIDY') {
-                if (selectedBreakfast.size > 0) return switchPhase('BREAKFAST');
-                if (selectedTeeth.size > 0) return switchPhase('TEETH');
-                // ... fallthrough
-            }
-            // Check from Breakfast onwards
-            if (p === 'TIDY' || p === 'BREAKFAST') {
-                if (selectedTeeth.size > 0) return switchPhase('TEETH');
-            }
-            // Check from Teeth onwards
-            if (p === 'TIDY' || p === 'BREAKFAST' || p === 'TEETH') {
-                if (selectedUndress.size > 0) return switchPhase('UNDRESS');
-            }
-            // ...
-
-            // Ideally, simpler logic:
-            const phases = [
-                { id: 'TIDY', set: selectedTidy },
-                { id: 'BREAKFAST', set: selectedBreakfast },
-                { id: 'TEETH', set: selectedTeeth },
-                { id: 'UNDRESS', set: selectedUndress },
-                { id: 'DRESS', set: selectedDress },
-                { id: 'BACKPACK', set: selectedBackpack }
-            ];
-
+            // Find index of current phase in routineOrder
             let currentIndex = -1;
-            if (p !== 'SETUP' && p !== 'ADVENTURE_SELECT') {
-                currentIndex = phases.findIndex(x => x.id === p);
+            if (currentPhase !== 'SETUP' && currentPhase !== 'ADVENTURE_SELECT') {
+                currentIndex = routineOrder.indexOf(currentPhase);
             }
 
-            // Find next valid
-            for (let i = currentIndex + 1; i < phases.length; i++) {
-                if (phases[i].set.size > 0) {
-                    return switchPhase(phases[i].id);
+            // Find next active phase with items
+            for (let i = currentIndex + 1; i < routineOrder.length; i++) {
+                const pId = routineOrder[i];
+                if (activePhases.has(pId)) {
+                    if (PHASE_MAP[pId].set.size > 0) {
+                        return switchPhase(pId);
+                    }
                 }
             }
 
@@ -1170,22 +1408,17 @@
         }
 
         function handleGameClick(item, x, y) {
-            let currentSet, sourceSet;
+            // Dynamic resolution
+            // state.phase is like 'TIDY'
+            const info = PHASE_MAP[state.phase];
+            const sourceSet = info.set;
+            const progressSet = state[state.phase.toLowerCase() + 'Progress'];
 
-            switch (state.phase) {
-                case 'TIDY': currentSet = state.tidyProgress; sourceSet = selectedTidy; break;
-                case 'BREAKFAST': currentSet = state.breakfastProgress; sourceSet = selectedBreakfast; break;
-                case 'TEETH': currentSet = state.teethProgress; sourceSet = selectedTeeth; break;
-                case 'UNDRESS': currentSet = state.undressProgress; sourceSet = selectedUndress; break;
-                case 'DRESS': currentSet = state.dressProgress; sourceSet = selectedDress; break;
-                case 'BACKPACK': currentSet = state.backpackProgress; sourceSet = selectedBackpack; break;
-            }
-
-            if (!currentSet.has(item.id)) {
-                currentSet.add(item.id);
+            if (!progressSet.has(item.id)) {
+                progressSet.add(item.id);
                 addScore(100, x, y);
 
-                renderGame(state.phase.toLowerCase() + '-grid', sourceSet, currentSet, handleGameClick);
+                renderGame(state.phase.toLowerCase() + '-grid', sourceSet, progressSet, handleGameClick);
                 checkPhaseComplete();
             }
         }
@@ -1206,17 +1439,12 @@
         }
 
         function checkPhaseComplete() {
-            let progress, total;
-            switch (state.phase) {
-                case 'TIDY': progress = state.tidyProgress.size; total = selectedTidy.size; break;
-                case 'BREAKFAST': progress = state.breakfastProgress.size; total = selectedBreakfast.size; break;
-                case 'TEETH': progress = state.teethProgress.size; total = selectedTeeth.size; break;
-                case 'UNDRESS': progress = state.undressProgress.size; total = selectedUndress.size; break;
-                case 'DRESS': progress = state.dressProgress.size; total = selectedDress.size; break;
-                case 'BACKPACK': progress = state.backpackProgress.size; total = selectedBackpack.size; break;
-            }
+            // Dynamic check
+            const info = PHASE_MAP[state.phase];
+            const sourceSet = info.set;
+            const progressSet = state[state.phase.toLowerCase() + 'Progress'];
 
-            if (progress >= total) {
+            if (progressSet.size >= sourceSet.size) {
                 setTimeout(() => {
                     advancePhase();
                 }, 1000);
