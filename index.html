@@ -1390,8 +1390,8 @@
         <button class="btn btn-play" style="margin-top: 30px;" onclick="startGame()">👍 ¡ESTOY LISTO!</button>
     </section>
 
-    <!-- PANTALLA 3: GAME -->
-    <section id="screen-game" class="screen" style="justify-content: flex-start;">
+    <!-- PANTALLA 3: GAME (TIDY) -->
+    <section id="screen-tidy" class="screen" style="justify-content: flex-start;">
         <div class="hud-top">
             <div class="score-board">
                 <span>⭐</span> <span id="score-display">0</span>
@@ -1823,7 +1823,13 @@
 
         function showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
+            const screen = document.getElementById(screenId);
+            if (screen) {
+                screen.classList.add('active');
+            } else {
+                console.error("Screen not found:", screenId);
+            }
+            
             // Show header on game screens
             if (screenId.startsWith('screen-')) {
                 document.getElementById('main-header').classList.remove('hidden');
@@ -1905,7 +1911,13 @@
 
                 const nameDiv = document.createElement('div');
                 nameDiv.className = 'phase-name';
+
+                const dragHandle = document.createElement('span');
+                dragHandle.className = 'drag-handle';
+                dragHandle.innerHTML = '☰';
+
                 nameDiv.innerHTML = `<span style="font-size:2rem">${info.icon}</span> ${info.label}`;
+                nameDiv.prepend(dragHandle);
 
                 const controls = document.createElement('div');
                 controls.className = 'phase-controls';
@@ -2138,12 +2150,19 @@
                 return showEndGame();
             }
 
-            state.phase = currentPhaseId; // Update current phase in state
-            const screenId = 'screen-' + currentPhaseId.toLowerCase();
-            const gridId = currentPhaseId.toLowerCase() + '-grid';
             const info = PHASE_MAP[currentPhaseId];
             const set = info.set;
             const progress = state[currentPhaseId.toLowerCase() + 'Progress'];
+
+            // SKIP EMPTY PHASES
+            if (set.size === 0) {
+                state.phaseIndex++;
+                return switchPhase();
+            }
+
+            state.phase = currentPhaseId; // Update current phase in state
+            const screenId = 'screen-' + currentPhaseId.toLowerCase();
+            const gridId = currentPhaseId.toLowerCase() + '-grid';
 
             showScreen(screenId);
             renderGame(gridId, set, progress, handleGameClick);
