@@ -1,0 +1,2315 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>¡TU AVENTURA!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            /* DEFAULTS (Hero/Liquid) */
+            --bg-color: #0d1b2a;
+            --bg-gradient: radial-gradient(circle at 20% 30%, #4158D0 0%, #C850C0 50%, #FFCC70 100%);
+            --primary: #F72585;
+            --secondary: #4CC9F0;
+            --accent: #FFD93D;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-light: rgba(255, 255, 255, 0.4);
+            /* Highlight edge */
+            --glass-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+            --text-main: #FFFFFF;
+            --success: #2ECC71;
+
+            --icon-circle-bg: rgba(255, 255, 255, 0.1);
+            --font-main: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-head: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+            /* Soften header font */
+        }
+
+        /* 🚀 THEME: SPACE */
+        body.theme-space {
+            --bg-gradient: linear-gradient(135deg, #0B1026 0%, #2B32B2 100%);
+            --primary: #F72585;
+            --secondary: #4CC9F0;
+            --accent: #FFD93D;
+        }
+
+        body.theme-space .bg-overlay {
+            background-image:
+                radial-gradient(2px 2px at 20px 30px, #eee, rgba(0, 0, 0, 0)),
+                radial-gradient(2px 2px at 40px 70px, #fff, rgba(0, 0, 0, 0)),
+                radial-gradient(2px 2px at 90px 40px, #fff, rgba(0, 0, 0, 0));
+            background-size: 200px 200px;
+            animation: twinkle 5s infinite;
+        }
+
+        /* 🌲 THEME: FOREST */
+        body.theme-forest {
+            --bg-gradient: linear-gradient(135deg, #1b5e20 0%, #81c784 100%);
+            --primary: #FF7043;
+            --secondary: #4DB6AC;
+            --accent: #FFD54F;
+            --glass: rgba(255, 255, 255, 0.2);
+            --glass-border: rgba(255, 255, 255, 0.3);
+        }
+
+        body.theme-forest .bg-overlay {
+            background-image: url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M20 5 L10 25 H30 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: 60px 60px;
+        }
+
+        /* 🏴‍☠️ THEME: PIRATE */
+        body.theme-pirate {
+            --bg-gradient: linear-gradient(135deg, #1a237e 0%, #00acc1 100%);
+            --primary: #d32f2f;
+            --secondary: #ffd700;
+            --accent: #ffeb3b;
+            --glass: rgba(255, 248, 225, 0.15);
+        }
+
+        body.theme-pirate .bg-overlay {
+            background-image: url('data:image/svg+xml;utf8,<svg width="60" height="30" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg"><path d="M0 15 Q 15 0 30 15 T 60 15" stroke="rgba(255,255,255,0.1)" fill="none" stroke-width="2"/></svg>');
+            background-size: 60px 60px;
+            animation: waves 4s infinite linear;
+        }
+
+        /* 🦁 THEME: JUNGLE */
+        body.theme-jungle {
+            --bg-gradient: linear-gradient(135deg, #004d40 0%, #00bfa5 100%);
+            --primary: #ffab00;
+            /* Orange tiger */
+            --secondary: #64dd17;
+            /* Bright Green */
+            --accent: #ffd600;
+        }
+
+        body.theme-jungle .bg-overlay {
+            background-image: url('data:image/svg+xml;utf8,<svg width="50" height="50" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg"><path d="M25 0 Q 35 25 25 50 Q 15 25 25 0" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: 50px 50px;
+        }
+
+        /* 🦕 THEME: DINO */
+        body.theme-dino {
+            --bg-gradient: linear-gradient(135deg, #3e2723 0%, #795548 100%);
+            --primary: #ff5722;
+            /* Lava */
+            --secondary: #8d6e63;
+            --accent: #ffcc80;
+        }
+
+        body.theme-dino .bg-overlay {
+            background-image: url('data:image/svg+xml;utf8,<svg width="60" height="40" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="30" r="5" fill="rgba(255,255,255,0.1)"/><path d="M30 30 L40 10 L50 30 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: 80px 80px;
+        }
+
+        /* 🏎️ THEME: RACING */
+        body.theme-racing {
+            --bg-gradient: linear-gradient(135deg, #212121 0%, #424242 100%);
+            --primary: #d50000;
+            /* Red */
+            --secondary: #ffffff;
+            --accent: #ffea00;
+        }
+
+        body.theme-racing .bg-overlay {
+            background-image: url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="20" height="20" fill="rgba(255,255,255,0.1)"/><rect x="20" y="20" width="20" height="20" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: 40px 40px;
+        }
+
+        /* 🦸 THEME: SUPERHERO */
+        body.theme-hero {
+            --bg-gradient: linear-gradient(135deg, #01579b 0%, #0288d1 100%);
+            /* Hero Blue */
+            --primary: #d50000;
+            /* Hero Red */
+            --secondary: #ffeb3b;
+            /* Hero Yellow */
+            --accent: #ffffff;
+            --glass: rgba(255, 255, 255, 0.15);
+        }
+
+        body.theme-hero .bg-overlay {
+            background-image: url('data:image/svg+xml;utf8,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><path d="M30 0 L40 20 L60 20 L45 35 L50 55 L30 40 L10 55 L15 35 L0 20 L20 20 Z" fill="rgba(255,255,255,0.15)"/></svg>');
+            background-size: 150px 150px;
+            animation: boom 3s infinite alternate cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+
+        /* RESET & BASE */
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            /* Prevent accidental text selection by kids */
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+            transition: background 0.8s ease-in-out;
+        }
+
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.15;
+            /* Sutilized background icons */
+            mix-blend-mode: overlay;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: var(--font-head);
+            font-weight: 800;
+            text-align: center;
+            margin: 0.5em 0;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            /* Refined Apple liquid shadow */
+            letter-spacing: 0.5px;
+        }
+
+        h1.main-title {
+            color: var(--text-main);
+            font-size: 2.8rem;
+            margin-top: 15px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 255, 255, 0.2);
+            font-weight: 900;
+            /* Removed -webkit-text-stroke */
+        }
+
+        /* HEADERS / NAV */
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            /* More liquid clear */
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-bottom: 1px solid var(--glass-border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        #header-title {
+            font-size: 1.8rem;
+            margin: 0 0 10px 0;
+            color: white;
+            font-weight: 800;
+        }
+
+        .score-board {
+            background: rgba(255, 255, 255, 0.05);
+            /* Liquid capsule */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 8px 30px;
+            border-radius: 50px;
+            border: 1px solid var(--glass-light);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 2px 0 rgba(255, 255, 255, 0.2);
+            font-family: var(--font-head);
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .points-pop {
+            position: absolute;
+            color: white;
+            font-size: 3rem;
+            font-weight: 900;
+            font-family: var(--font-head);
+            pointer-events: none;
+            text-shadow: 0 4px 15px rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.5);
+            animation: fadeUp 1s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 999;
+        }
+
+        /* SCREENS */
+        section.screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            flex: 1;
+            animation: fadeInScreen 0.5s ease-out;
+        }
+
+        section.screen.active {
+            display: flex;
+        }
+
+        /* SELECTION SCREEN CARDS (Liquid Glass) */
+        .adventure-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(30px) saturate(150%);
+            -webkit-backdrop-filter: blur(30px) saturate(150%);
+            border: 1px solid var(--glass-border);
+            border-top: 1px solid var(--glass-light);
+            /* Liquid top shine */
+            border-radius: 35px;
+            /* Squircles */
+            padding: 25px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            width: 100%;
+            max-width: 300px;
+            margin: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .adventure-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%);
+            transform: skewX(-25deg);
+            transition: 0.6s;
+        }
+
+        .adventure-card:hover {
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            border-color: rgba(255, 255, 255, 0.5);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+        }
+
+        .adventure-card:hover::after {
+            left: 200%;
+        }
+
+        .adventure-card:active {
+            transform: scale(0.97);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .adventure-icon {
+            font-size: 4.5rem;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.4));
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* Stagger float animations for variety */
+        .adventure-card:nth-child(even) .adventure-icon {
+            animation-delay: -2s;
+        }
+
+        .adventure-title {
+            font-family: var(--font-head);
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .adventure-desc {
+            font-size: 0.95rem;
+            opacity: 0.8;
+            margin-top: 8px;
+            display: block;
+            font-weight: 600;
+        }
+
+        /* Hide desc on grid */
+
+        /* THEME PREVIEWS FOR CARDS */
+        /* THEME PREVIEWS FOR CARDS */
+        .card-space {
+            background: linear-gradient(135deg, rgba(11, 16, 38, 0.4), rgba(43, 50, 178, 0.4));
+            border-color: #4CC9F0;
+        }
+
+        .card-forest {
+            background: linear-gradient(135deg, rgba(27, 94, 32, 0.4), rgba(129, 199, 132, 0.4));
+            border-color: #4DB6AC;
+        }
+
+        .card-pirate {
+            background: linear-gradient(135deg, rgba(26, 35, 126, 0.4), rgba(0, 172, 193, 0.4));
+            border-color: #FFD700;
+        }
+
+        .card-jungle {
+            background: linear-gradient(135deg, rgba(0, 77, 64, 0.4), rgba(0, 191, 165, 0.4));
+            border-color: #ffab00;
+        }
+
+        .card-dino {
+            background: linear-gradient(135deg, rgba(62, 39, 35, 0.4), rgba(121, 85, 72, 0.4));
+            border-color: #ff5722;
+        }
+
+        .card-racing {
+            background: linear-gradient(135deg, rgba(33, 33, 33, 0.4), rgba(66, 66, 66, 0.4));
+            border-color: #d50000;
+        }
+
+        .card-hero {
+            background: linear-gradient(135deg, rgba(1, 87, 155, 0.4), rgba(2, 136, 209, 0.4));
+            border-color: #ffeb3b;
+        }
+
+        /* CLOTHING GRID & CARDS (Liquid Glass) */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 20px;
+            width: 100%;
+            padding: 15px;
+        }
+
+        .card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.01) 100%);
+            border: 1px solid var(--glass-border);
+            border-top: 1px solid var(--glass-light);
+            border-radius: 35px;
+            /* Squircles */
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(30px) saturate(150%);
+            -webkit-backdrop-filter: blur(30px) saturate(150%);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            aspect-ratio: 1;
+            box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation-fill-mode: both;
+        }
+
+        /* Stagger animation for cards */
+        .grid-container>.card:nth-child(1) {
+            animation-delay: 0.05s;
+        }
+
+        .grid-container>.card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .grid-container>.card:nth-child(3) {
+            animation-delay: 0.15s;
+        }
+
+        .grid-container>.card:nth-child(4) {
+            animation-delay: 0.2s;
+        }
+
+        .grid-container>.card:nth-child(5) {
+            animation-delay: 0.25s;
+        }
+
+        .grid-container>.card:nth-child(6) {
+            animation-delay: 0.3s;
+        }
+
+        .grid-container>.card:nth-child(7) {
+            animation-delay: 0.35s;
+        }
+
+        .grid-container>.card:nth-child(8) {
+            animation-delay: 0.4s;
+        }
+
+        .grid-container>.card:nth-child(9) {
+            animation-delay: 0.45s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.3), inset 0 2px 0 rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .card:active {
+            transform: translateY(2px) scale(0.92);
+        }
+
+        .card.selected {
+            border-color: var(--secondary);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 15px var(--secondary);
+        }
+
+        .card.done {
+            background: linear-gradient(135deg, rgba(46, 204, 113, 0.4) 0%, rgba(39, 174, 96, 0.4) 100%);
+            border-color: var(--success);
+            opacity: 0.9;
+            transform: scale(0.95);
+            animation: squish 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 0 20px rgba(46, 204, 113, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .card.done .card-label {
+            text-decoration: line-through;
+            color: var(--success);
+        }
+
+        .icon-circle {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            width: 85px;
+            height: 85px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            font-size: 3.5rem;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2), 0 4px 10px rgba(0, 0, 0, 0.1);
+            filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.2));
+            transition: transform 0.3s;
+        }
+
+        .card:hover .icon-circle {
+            transform: scale(1.1);
+        }
+
+        .card-label {
+            font-family: var(--font-head);
+            letter-spacing: 0.5px;
+            font-size: 1.15rem;
+            text-transform: uppercase;
+            text-align: center;
+            line-height: 1.2;
+            text-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+            -webkit-text-stroke: 0.5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* PREMIUM BUTTONS (Liquid Capsule) */
+        .btn {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(30px) saturate(150%);
+            -webkit-backdrop-filter: blur(30px) saturate(150%);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-top: 1px solid rgba(255, 255, 255, 0.5);
+            /* Highlight */
+            padding: 18px 45px;
+            font-size: 1.4rem;
+            font-family: var(--font-head);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            width: 85%;
+            max-width: 400px;
+            margin: 25px auto;
+            display: block;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-play {
+            font-size: 2.2rem;
+            padding: 22px 45px;
+            background: linear-gradient(135deg, rgba(46, 204, 113, 0.4) 0%, rgba(39, 174, 96, 0.2) 100%);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-top: 1px solid rgba(255, 255, 255, 0.8);
+            animation: pulseLiquid 3s infinite;
+            color: white;
+        }
+
+        .btn-play:hover {
+            background: linear-gradient(135deg, rgba(46, 204, 113, 0.6) 0%, rgba(39, 174, 96, 0.3) 100%);
+        }
+
+        .btn-play:active {
+            transform: scale(0.97);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        /* SETUP */
+        .setup-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .setup-col {
+            flex: 1 1 300px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 15px;
+        }
+
+        .setup-col h3 {
+            color: var(--secondary);
+            text-align: left;
+            margin-left: 10px;
+        }
+
+        /* ANIMATIONS */
+        @keyframes twinkle {
+
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes waves {
+            0% {
+                background-position: 0 0;
+            }
+
+            100% {
+                background-position: 60px 0;
+            }
+        }
+
+        @keyframes boom {
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-60px);
+            }
+        }
+
+        /* UTIL */
+        .hidden {
+            display: none !important;
+        }
+
+        .message-area {
+            font-size: 1.3rem;
+            margin: 10px;
+            text-align: center;
+            color: var(--accent);
+            font-weight: bold;
+            min-height: 1.5em;
+        }
+
+        .big-icon {
+            font-size: 6rem;
+            margin: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        /* MISSION SETUP BOARD */
+        .mission-board {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            min-height: 400px;
+        }
+
+        .mission-timeline {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            padding: 15px;
+            overflow-y: auto;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-width: 250px;
+        }
+
+        .mission-editor {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Responsive Mobile Fixes */
+        @media (max-width: 768px) {
+            h1.main-title {
+                font-size: 2.3rem;
+                line-height: 1.1;
+                font-weight: 900;
+            }
+
+            .mission-board {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .mission-timeline {
+                min-width: 100%;
+            }
+
+            .mission-editor {
+                min-height: 350px;
+            }
+
+            /* Improve selection grid on mobile */
+            .adventure-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 15px !important;
+                padding: 10px;
+            }
+
+            .adventure-card {
+                margin: 0 !important;
+                padding: 20px 10px !important;
+                border-radius: 25px;
+            }
+
+            .adventure-icon {
+                font-size: 3.5rem !important;
+            }
+
+            .adventure-title {
+                font-size: 1.1rem !important;
+            }
+
+            .adventure-desc {
+                display: none !important;
+                /* Hide description on mobile to save space */
+            }
+
+            #screen-setup {
+                padding-top: 10px;
+            }
+
+            /* Better floating play button on mobile */
+            .btn-play {
+                position: sticky;
+                bottom: 25px;
+                width: 90%;
+                z-index: 100;
+                font-size: 1.8rem;
+                padding: 18px 20px;
+            }
+        }
+
+        /* --- NEW TIME SETTINGS UI IN SETUP --- */
+        .time-settings-panel {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.01) 100%);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 20px;
+            margin: 20px auto;
+            width: 90%;
+            max-width: 500px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .segmented-control {
+            display: flex;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 30px;
+            padding: 4px;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .segment-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .segment-btn.active {
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .time-input-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+            display: none;
+            /* hidden by default */
+        }
+
+        .time-input-container.visible {
+            display: flex;
+        }
+
+        .btn-time-adjust {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        #time-minutes-display {
+            font-size: 1.8rem;
+            font-family: var(--font-head);
+            min-width: 60px;
+            text-align: center;
+        }
+
+        /* --- PREVIEW SCREEN (MISSION MAP) --- */
+        .preview-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 90%;
+            max-width: 500px;
+            margin: 20px auto;
+            max-height: 50vh;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .preview-item {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+            border: 1px solid var(--glass-light);
+            border-radius: 20px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            animation: fadeInRight 0.5s ease backwards;
+        }
+
+        .preview-icon {
+            font-size: 2.2rem;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        .preview-text {
+            font-size: 1.3rem;
+            font-weight: 800;
+            flex: 1;
+        }
+
+        @keyframes fadeInRight {
+            0% {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* --- HUD (IN-GAME TIME) --- */
+        .hud-top {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
+            padding: 0 20px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .timer-board {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            padding: 8px 25px;
+            border-radius: 50px;
+            border: 1px solid var(--glass-light);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            font-family: var(--font-head);
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            display: none;
+            /* hidden if time is off */
+        }
+
+        .timer-board.urgent {
+            color: #FF5252;
+            animation: pulseLiquid 0.5s infinite alternate;
+        }
+
+        .phase-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 15px 20px;
+            /* Bigger padding for fat fingers */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: grab;
+            backdrop-filter: blur(10px);
+            font-size: 1.3rem;
+            /* Slightly larger text */
+            font-weight: 800;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .phase-card:active {
+            cursor: grabbing;
+        }
+
+        .phase-name {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1;
+        }
+
+        /* FAT FINGER DRAG HANDLE */
+        .drag-handle {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.8rem;
+            padding: 10px;
+            margin-left: -10px;
+            cursor: grab;
+        }
+
+        .phase-controls {
+            display: flex;
+            gap: 15px;
+            /* More gap */
+        }
+
+        /* FAT FINGER BUTTONS */
+        .btn-icon {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid var(--glass-light);
+            color: white;
+            border-radius: 50%;
+            width: 45px;
+            /* Huge touch targets */
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            transition: all 0.2s;
+        }
+
+        .ctrl-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .ctrl-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .ctrl-btn.active {
+            color: var(--success);
+        }
+
+        .editor-header {
+            font-family: var(--font-head);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            border-bottom: 2px solid var(--glass-border);
+            padding-bottom: 10px;
+        }
+
+        .editor-grid {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        @keyframes waves {
+            0% {
+                background-position: 0 0;
+            }
+
+            100% {
+                background-position: 60px 0;
+            }
+        }
+
+        @keyframes boom {
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes pulseLiquid {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            }
+
+            50% {
+                transform: scale(1.03);
+                box-shadow: 0 20px 50px rgba(46, 204, 113, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            }
+        }
+
+        @keyframes pointerBounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+                filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+            }
+
+            50% {
+                transform: translateY(12px);
+                filter: drop-shadow(0 8px 8px rgba(0, 0, 0, 0.3));
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        @keyframes fadeInScreen {
+            0% {
+                opacity: 0;
+                transform: scale(0.95) translateY(20px);
+                filter: blur(5px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+                filter: blur(0);
+            }
+        }
+
+        .onboarding-pointer {
+            font-size: 4rem;
+            animation: pointerBounce 1.2s infinite ease-in-out;
+            margin: 0;
+            text-align: center;
+        }
+
+        /* Ensure parent lock doesn't overlap text on mobile */
+        .lock-container {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 15px;
+            margin-bottom: -40px;
+            /* pull up into header space carefully */
+            position: relative;
+            z-index: 10;
+        }
+
+        .lock-btn {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid var(--glass-border);
+            color: white;
+            font-size: 1.5rem;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .lock-btn:active {
+            transform: scale(0.9);
+        }
+
+        /* PROGRESS BAR */
+        .progress-container {
+            width: 90%;
+            max-width: 500px;
+            height: 25px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            margin: 10px auto 20px auto;
+            overflow: hidden;
+            border: 2px solid var(--glass-border);
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--success);
+            transition: width 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            box-shadow: 0 0 10px var(--success);
+            border-radius: 12px;
+        }
+
+        /* HIDDEN CONTROLS WHEN LOCKED */
+        .mission-board.locked .phase-controls {
+            display: none !important;
+        }
+
+        .mission-board.locked .mission-editor {
+            display: none !important;
+        }
+
+        .mission-board.locked .phase-card {
+            pointer-events: none;
+        }
+
+        .mission-board.locked {
+            justify-content: center;
+        }
+
+        /* ADDED ANIMATIONS FOR CARDS */
+        @keyframes popIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            80% {
+                transform: scale(1.05);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes squish {
+            0% {
+                transform: scale(1);
+            }
+
+            30% {
+                transform: scale(0.9, 1.1);
+            }
+
+            60% {
+                transform: scale(1.1, 0.9);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body class="theme-space"> <!-- Default Theme -->
+
+    <div class="bg-overlay"></div>
+
+    <header id="main-header" class="hidden">
+        <h1 class="main-title" id="header-title">MI AVENTURA</h1>
+        <div class="score-board">
+            <span id="score-icon">⭐</span>
+            <span id="score-display">0</span>
+        </div>
+    </header>
+
+    <!-- 1. ADVENTURE SELECTOR -->
+    <section id="screen-adventure" class="screen active">
+        <h1 class="main-title" style="font-size: 2.2rem; margin-top: 30px; text-shadow: 0 4px 6px rgba(0,0,0,0.5);">
+            ¡HOLA! ¿QUÉ AVENTURA QUIERES HOY?</h1>
+        <div class="onboarding-pointer">⬇️</div>
+
+        <div class="adventure-grid"
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); width: 100%; max-width: 800px; gap: 20px; padding: 20px;">
+            <!-- ORIGINAL -->
+            <div class="adventure-card card-space" onclick="selectAdventure('SPACE')">
+                <div class="adventure-icon">🚀</div>
+                <div class="adventure-title">ESPACIO</div>
+                <div class="adventure-desc">Conviértete en astronauta</div>
+            </div>
+            <div class="adventure-card card-forest" onclick="selectAdventure('FOREST')">
+                <div class="adventure-icon">🌲</div>
+                <div class="adventure-title">BOSQUE</div>
+                <div class="adventure-desc">Explora la naturaleza</div>
+            </div>
+            <div class="adventure-card card-pirate" onclick="selectAdventure('PIRATE')">
+                <div class="adventure-icon">🏴‍☠️</div>
+                <div class="adventure-title">PIRATAS</div>
+                <div class="adventure-desc">Busca el tesoro</div>
+            </div>
+
+            <!-- NEW -->
+            <div class="adventure-card card-jungle" onclick="selectAdventure('JUNGLE')">
+                <div class="adventure-icon">🦁</div>
+                <div class="adventure-title">SELVA</div>
+                <div class="adventure-desc">Explora la selva</div>
+            </div>
+            <div class="adventure-card card-dino" onclick="selectAdventure('DINO')">
+                <div class="adventure-icon">🦖</div>
+                <div class="adventure-title">DINOS</div>
+                <div class="adventure-desc">Mundo Jurásico</div>
+            </div>
+            <div class="adventure-card card-racing" onclick="selectAdventure('RACING')">
+                <div class="adventure-icon">🏎️</div>
+                <div class="adventure-title">CARRERAS</div>
+                <div class="adventure-desc">Gran Premio</div>
+            </div>
+            <div class="adventure-card card-hero" onclick="selectAdventure('HERO')">
+                <div class="adventure-icon">🦸</div>
+                <div class="adventure-title">HÉROE</div>
+                <div class="adventure-desc">Salvar el mundo</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. SETUP PHASE (MISSION BOARD) -->
+    <section id="screen-setup" class="screen">
+        <div class="lock-container">
+            <button class="lock-btn" id="parent-lock-btn" onclick="toggleParentLock()">🔒</button>
+        </div>
+
+        <h2 id="setup-title" style="margin-top: 10px;">TU MISIÓN</h2>
+        <p style="text-align:center; opacity:0.8; margin-top:-10px;" id="setup-subtitle">¡Todo listo para empezar!</p>
+
+        <div class="lock-container">
+            <button class="lock-btn" id="parent-lock-btn" onclick="toggleParentLock()">🔓</button>
+        </div>
+
+        <div class="mission-board" id="mission-board">
+            <!-- Timeline/Routine List -->
+            <div class="mission-timeline">
+                <h2>RUTINA BASE</h2>
+                <div id="routine-list">
+                    <!-- Filled by JS -->
+                </div>
+            </div>
+
+            <!-- Editor Pool -->
+            <div class="mission-editor">
+                <h2>AÑADIR FASE</h2>
+                <div class="grid-container" id="editor-pool">
+                    <!-- Filled by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- TIME SETTINGS (NEW) -->
+        <div class="mission-board locked" style="margin-top:20px; display:block;">
+            <div class="time-settings-panel">
+                <div class="setting-row">
+                    <span>⏰ Reloj de Misión:</span>
+                    <div class="segmented-control">
+                        <button class="segment-btn active" onclick="setTimeMode('OFF')">Sin Tiempo</button>
+                        <button class="segment-btn" onclick="setTimeMode('STOPWATCH')">Cronómetro</button>
+                        <button class="segment-btn" onclick="setTimeMode('TIMER')">Cuenta Atrás</button>
+                    </div>
+                </div>
+
+                <div class="time-input-container" id="timer-input-div">
+                    <button class="btn-time-adjust" onclick="adjustTime(-1)">-</button>
+                    <span id="time-minutes-display">10</span><span> min</span>
+                    <button class="btn-time-adjust" onclick="adjustTime(1)">+</button>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-play" onclick="showPreviewScreen()">▶️ ¡COMENZAR!</button>
+    </section>
+
+    <!-- PANTALLA 2.5: MISSION MAP PREVIEW (NEW) -->
+    <section id="screen-preview" class="screen">
+        <h1 class="main-title" id="preview-title" style="font-size: 2.2rem;">MAPA DE LA MISIÓN</h1>
+        <h2 id="preview-subtitle">¡Mira lo que nos espera!</h2>
+
+        <div class="preview-list" id="preview-list-container">
+            <!-- Injected via JS -->
+        </div>
+
+        <button class="btn btn-play" style="margin-top: 30px;" onclick="startGame()">👍 ¡ESTOY LISTO!</button>
+    </section>
+
+    <!-- PANTALLA 3: GAME -->
+    <section id="screen-game" class="screen" style="justify-content: flex-start;">
+        <div class="hud-top">
+            <div class="score-board">
+                <span>⭐</span> <span id="score-display">0</span>
+            </div>
+            <!-- RELOJ -->
+            <div class="timer-board" id="timer-display">
+                <span>⏱️</span> <span id="time-text">00:00</span>
+            </div>
+        </div>
+        <h2 id="tidy-title">FASE 1: ORDENAR</h2>
+        <div class="message-area" id="tidy-msg">Mensaje de orden</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="tidy-progress"></div>
+        </div>
+        <div class="grid-container" id="tidy-grid"></div>
+    </section>
+
+    <!-- 4. BREAKFAST PHASE -->
+    <section id="screen-breakfast" class="screen">
+        <h2 id="breakfast-title">FASE 2: DESAYUNO</h2>
+        <div class="message-area" id="breakfast-msg">Mensaje de desayuno</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="breakfast-progress"></div>
+        </div>
+        <div class="grid-container" id="breakfast-grid"></div>
+    </section>
+
+    <!-- 5. TEETH PHASE -->
+    <section id="screen-teeth" class="screen">
+        <h2 id="teeth-title">FASE 3: DIENTES</h2>
+        <div class="message-area" id="teeth-msg">Mensaje de dientes</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="teeth-progress"></div>
+        </div>
+        <div class="grid-container" id="teeth-grid"></div>
+    </section>
+
+    <!-- 6. UNDRESS PHASE -->
+    <section id="screen-undress" class="screen">
+        <h2 id="undress-title">FASE 4: QUITARSE</h2>
+        <div class="message-area" id="undress-msg">Mensaje de quitarse</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="undress-progress"></div>
+        </div>
+        <div class="grid-container" id="undress-grid"></div>
+    </section>
+
+    <!-- 7. DRESS PHASE -->
+    <section id="screen-dress" class="screen">
+        <h2 id="dress-title">FASE 5: PONERSE</h2>
+        <div class="message-area" id="dress-msg">Mensaje de ponerse</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="dress-progress"></div>
+        </div>
+        <div class="grid-container" id="dress-grid"></div>
+    </section>
+
+    <!-- 8. BACKPACK PHASE -->
+    <section id="screen-backpack" class="screen">
+        <h2 id="backpack-title">FASE 6: MOCHILA</h2>
+        <div class="message-area" id="backpack-msg">Mensaje de mochila</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="backpack-progress"></div>
+        </div>
+        <div class="grid-container" id="backpack-grid"></div>
+    </section>
+
+    <!-- 5. SUCCESS PHASE -->
+    <section id="screen-success" class="screen">
+        <h1 style="color:var(--success); font-size: 2.5rem; margin-top: 40px;">¡COMPLETADO!</h1>
+        <div class="big-icon" id="success-icon">🏆</div>
+        <div style="font-size: 3rem; color: var(--accent); padding: 20px;" id="final-score">0 PUNTOS</div>
+        <p style="font-size: 1.4rem;" id="success-msg">¡Gran trabajo!</p>
+        <button class="btn" onclick="location.reload()">Jugar de Nuevo</button>
+    </section>
+
+    <canvas id="confetti"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:100;"></canvas>
+
+    <script>
+        // --- DATA ---
+        const catalog = [
+            // ROPA / UNDRESS / DRESS
+            { id: 'calzoncillos', name: 'Calzoncillos', icon: '🩲', type: 'clothes' },
+            { id: 'braguitas', name: 'Braguitas', icon: '🩲', type: 'clothes' },
+            { id: 'calcetines', name: 'Calcetines', icon: '🧦', type: 'clothes' },
+            { id: 'camiseta', name: 'Camiseta', icon: '👕', type: 'clothes' },
+            { id: 'pantalon', name: 'Pantalón', icon: '👖', type: 'clothes' },
+            { id: 'zapatos', name: 'Zapatos', icon: '👟', type: 'clothes' },
+            { id: 'zapatillas', name: 'Zapatillas', icon: '👟', type: 'clothes' },
+            { id: 'chaqueta', name: 'Chaqueta', icon: '🧥', type: 'clothes' },
+            { id: 'jersey', name: 'Jersey', icon: '🧥', type: 'clothes' },
+            { id: 'pijama_camiseta', name: 'Camiseta Pijama', icon: '👕', type: 'clothes' },
+            { id: 'pijama_pantalon', name: 'Pantalón Pijama', icon: '🩳', type: 'clothes' },
+            { id: 'pijama', name: 'Pijama Entero', icon: '👘', type: 'clothes' },
+            { id: 'vestido', name: 'Vestido', icon: '👗', type: 'clothes' },
+            { id: 'abrigo', name: 'Abrigo', icon: '🧥', type: 'clothes' },
+            { id: 'gorro', name: 'Gorro', icon: '🧢', type: 'clothes' },
+            { id: 'bufanda', name: 'Bufanda', icon: '🧣', type: 'clothes' },
+
+            // HABITACIÓN / TIDY
+            { id: 'hacer_cama', name: 'Hacer Cama', icon: '🛏️', type: 'tidy' },
+            { id: 'recoger_juguetes', name: 'Juguetes', icon: '🧸', type: 'tidy' },
+            { id: 'guardar_pijama', name: 'Guardar Pijama', icon: '👚', type: 'tidy' },
+            { id: 'abrir_persiana', name: 'Abrir Persiana', icon: '☀️', type: 'tidy' },
+            { id: 'ropa_sucia', name: 'Ropa Sucia', icon: '🧺', type: 'tidy' },
+            { id: 'regar_plantas', name: 'Regar Plantas', icon: '🪴', type: 'tidy' },
+
+            // DESAYUNO / BREAKFAST
+            { id: 'leche', name: 'Leche', icon: '🥛', type: 'breakfast' },
+            { id: 'tostadas', name: 'Tostadas', icon: '🍞', type: 'breakfast' },
+            { id: 'cereales', name: 'Cereales', icon: '🥣', type: 'breakfast' },
+            { id: 'fruta', name: 'Fruta', icon: '🍎', type: 'breakfast' },
+            { id: 'zumo', name: 'Zumo', icon: '🧃', type: 'breakfast' },
+            { id: 'galletas', name: 'Galletas', icon: '🍪', type: 'breakfast' },
+            { id: 'yogur', name: 'Yogur', icon: '🍦', type: 'breakfast' },
+            { id: 'huevo', name: 'Huevo', icon: '🥚', type: 'breakfast' },
+            { id: 'sandwich', name: 'Sandwich', icon: '🥪', type: 'breakfast' },
+            { id: 'cubiertos', name: 'Cubiertos', icon: '🍴', type: 'breakfast' },
+            { id: 'servilleta', name: 'Servilleta', icon: '🧻', type: 'breakfast' },
+
+            // DIENTES / TEETH
+            { id: 'cepillo', name: 'Cepillo', icon: '🪥', type: 'teeth' },
+            { id: 'pasta', name: 'Pasta', icon: '🧴', type: 'teeth' },
+            { id: 'lavar_cara', name: 'Lavar Cara', icon: '💧', type: 'teeth' },
+            { id: 'peine', name: 'Peinarse', icon: '💆', type: 'teeth' },
+            { id: 'colonia', name: 'Colonia', icon: '✨', type: 'teeth' },
+            { id: 'toalla', name: 'Toalla', icon: '🧖', type: 'teeth' },
+            { id: 'hilo_dental', name: 'Hilo Dental', icon: '🧵', type: 'teeth' },
+
+            // MOCHILA / BACKPACK
+            { id: 'agua', name: 'Agua', icon: '💧', type: 'backpack' },
+            { id: 'almuerzo', name: 'Almuerzo', icon: '🥪', type: 'backpack' },
+            { id: 'agenda', name: 'Agenda', icon: '📓', type: 'backpack' },
+            { id: 'libros', name: 'Libros', icon: '📚', type: 'backpack' },
+            { id: 'estuche', name: 'Estuche', icon: '✏️', type: 'backpack' },
+            { id: 'juguete_cole', name: 'Juguete Cole', icon: '🎮', type: 'backpack' },
+            { id: 'mochila_deporte', name: 'Mochila Deporte', icon: '🎾', type: 'backpack' },
+            { id: 'crema_sol', name: 'Crema Sol', icon: '🧴', type: 'backpack' },
+            { id: 'gorra', name: 'Gorra', icon: '🧢', type: 'backpack' }
+        ];
+
+        // --- THEME CONFIG (EXTENDED) ---
+        const THEMES = {
+            SPACE: {
+                class: 'theme-space',
+                title: 'MISIÓN ESPACIAL',
+                icon: '🚀',
+                scoreIcon: '⭐',
+                welcome: '¡Prepárate para el despegue!',
+                texts: {
+                    setup: 'CONFIGURAR NAVE',
+                    undressTitle: 'DESPEGUE (Quitando Traje)',
+                    dressTitle: 'TRAJE ESPACIAL',
+                    tidyTitle: 'MANTENIMIENTO NAVE',
+                    breakfastTitle: 'COMBUSTIBLE',
+                    teethTitle: 'LIMPIEZA SENSORES',
+                    backpackTitle: 'KIT DE SUPERVIVENCIA',
+
+                    undressMsg: 'Quítate la ropa terrestre para despegar.',
+                    dressMsg: 'Ponte tu traje espacial de hoy.',
+                    tidyMsg: 'Prepara la cabina para el lanzamiento.',
+                    breakfastMsg: 'Recarga energía para el viaje.',
+                    teethMsg: 'Limpia los sensores de comunicación.',
+                    backpackMsg: 'Carga los suministros en la nave.',
+
+                    successMsg: '¡Misión cumplida, Comandante!',
+                    successIcon: '🪐'
+                }
+            },
+            FOREST: {
+                class: 'theme-forest',
+                title: 'AVENTURA BOSQUE',
+                icon: '🌲',
+                scoreIcon: '🍂',
+                welcome: '¡La naturaleza te espera!',
+                texts: {
+                    setup: 'PREPARAR VIAJE',
+                    undressTitle: 'SALIR DEL SACO',
+                    dressTitle: 'ROPA DE CAMPO',
+                    tidyTitle: 'LIMPIAR CAMPAMENTO',
+                    breakfastTitle: 'COMIDA DEL BOSQUE',
+                    teethTitle: 'LAVARSE EN EL RÍO',
+                    backpackTitle: 'MOCHILA EXPLORADOR',
+
+                    undressMsg: 'Quítate el pijama, ¡el sol ya salió!',
+                    dressMsg: 'Vístete para explorar el bosque.',
+                    tidyMsg: 'Deja el campamento ordenado.',
+                    breakfastMsg: 'Desayuna fuerte para la caminata.',
+                    teethMsg: 'Lávate con el agua fresca del río.',
+                    backpackMsg: 'Prepara todo para la excursión.',
+
+                    successMsg: '¡Has encontrado el árbol sabio!',
+                    successIcon: '⛺'
+                }
+            },
+            PIRATE: {
+                class: 'theme-pirate',
+                title: 'TESORO PIRATA',
+                icon: '🏴‍☠️',
+                scoreIcon: '💰',
+                welcome: '¡A la búsqueda del tesoro!',
+                texts: {
+                    setup: 'MISIÓN CAPITÁN',
+                    undressTitle: 'LEVAR ANCLAS',
+                    dressTitle: 'TRAJE DE PIRATA',
+                    tidyTitle: 'LIMPIAR CUBIERTA',
+                    breakfastTitle: 'RON Y GALLETAS',
+                    teethTitle: 'DIENTES BRILLANTES',
+                    backpackTitle: 'SACO DEL TESORO',
+
+                    undressMsg: '¡Fuera ropa de grumete, a navegar!',
+                    dressMsg: '¡Ponte tu ropa de Capitán!',
+                    tidyMsg: '¡A fregar la cubierta, marineros!',
+                    breakfastMsg: 'Come antes de buscar el tesoro.',
+                    teethMsg: '¡Eses dientes tienen que brillar como el oro!',
+                    backpackMsg: 'Guarda lo necesario en el cofre.',
+
+                    successMsg: '¡Tesoro encontrado! ¡Rey del mar!',
+                    successIcon: '💎'
+                }
+            },
+            JUNGLE: {
+                class: 'theme-jungle',
+                title: 'EXPEDICIÓN SELVA',
+                icon: '🦁',
+                scoreIcon: '🍌',
+                welcome: '¡La selva te llama!',
+                texts: {
+                    setup: 'PLAN DE SAFARI',
+                    undressTitle: 'DESPERTAR EN LA SELVA',
+                    dressTitle: 'ROPA DE CAMUFLAJE',
+                    tidyTitle: 'ORDENAR TIENDA',
+                    breakfastTitle: 'FRUTOS TROPICALES',
+                    teethTitle: 'SONRISA SALVAJE',
+                    backpackTitle: 'EQUIPO DE RASTREO',
+
+                    undressMsg: 'Quítate la ropa de dormir.',
+                    dressMsg: 'Vístete para ver a los leones.',
+                    tidyMsg: 'Deja la tienda lista para volver.',
+                    breakfastMsg: 'Come fruta para tener fuerza.',
+                    teethMsg: 'Lávate para rugir mejor.',
+                    backpackMsg: 'Prepara el equipo de investigación.',
+
+                    successMsg: '¡Eres el Rey de la Selva!',
+                    successIcon: '🐾'
+                }
+            },
+            DINO: {
+                class: 'theme-dino',
+                title: 'MUNDO JURÁSICO',
+                icon: '🦖',
+                scoreIcon: '🦴',
+                welcome: '¡Cuidado con los dinosaurios!',
+                texts: {
+                    setup: 'BASE JURÁSICA',
+                    undressTitle: 'ESCAPAR DE LA CUEVA',
+                    dressTitle: 'PIEL DE DINOSAURIO',
+                    tidyTitle: 'ORDENAR NIDO',
+                    breakfastTitle: 'COMIDA HERBÍVORA',
+                    teethTitle: 'DIENTES DE T-REX',
+                    backpackTitle: 'KIT DE FÓSILES',
+
+                    undressMsg: '¡Sal del nido, pequeño dino!',
+                    dressMsg: 'Ponte tu equipo de paleontólogo.',
+                    tidyMsg: 'Deja el nido limpio y ordenado.',
+                    breakfastMsg: 'Come hojas y agua fresca.',
+                    teethMsg: '¡Afila esos dientes!',
+                    backpackMsg: 'Lleva tus herramientas de excavación.',
+
+                    successMsg: '¡Has descubierto un T-REX!',
+                    successIcon: '🌋'
+                }
+            },
+            RACING: {
+                class: 'theme-racing',
+                title: 'GRAN PREMIO',
+                icon: '🏎️',
+                scoreIcon: '🏁',
+                welcome: '¡A por la Pole Position!',
+                texts: {
+                    setup: 'TALLER',
+                    undressTitle: 'CAMBIO DE RUEDAS',
+                    dressTitle: 'MONO DE PILOTO',
+                    tidyTitle: 'LIMPIAR TALLER',
+                    breakfastTitle: 'GASOLINA SUPER',
+                    teethTitle: 'PULIR CARROCERÍA',
+                    backpackTitle: 'CAJA DE HERRAMIENTAS',
+
+                    undressMsg: 'Cámbiate rápido, ¡el equipo te espera!',
+                    dressMsg: 'Ponte el traje ignífugo de piloto.',
+                    tidyMsg: 'Deja el taller impecable.',
+                    breakfastMsg: 'Llena el depósito a tope.',
+                    teethMsg: 'Saca brillo a esa sonrisa.',
+                    backpackMsg: 'Prepara las herramientas para la carrera.',
+
+                    successMsg: '¡Pole Position! ¡Campeón!',
+                    successIcon: '🏆'
+                }
+            },
+            HERO: {
+                class: 'theme-hero',
+                title: 'SUPER HÉROES',
+                icon: '🦸',
+                scoreIcon: '⚡',
+                welcome: '¡El mundo te necesita!',
+                texts: {
+                    setup: 'LA BATCUEVA',
+                    undressTitle: 'IDENTIDAD SECRETA',
+                    dressTitle: 'SUPERTRAJE',
+                    tidyTitle: 'ORDENAR GUARIDA',
+                    breakfastTitle: 'SUPER VITAMINAS',
+                    teethTitle: 'RAYOS LIMPIADORES',
+                    backpackTitle: 'GADGETS',
+
+                    undressMsg: 'Deja tu ropa de civil.',
+                    dressMsg: '¡Ponte tu capa y salva la ciudad!',
+                    tidyMsg: 'Mantén secreta tu guarida.',
+                    breakfastMsg: 'Toma tus superalimentos.',
+                    teethMsg: '¡Sonrisa deslumbrante activada!',
+                    backpackMsg: 'Carga tus gadgets secretos.',
+
+                    successMsg: '¡La ciudad está a salvo gracias a ti!',
+                    successIcon: '💥'
+                }
+            }
+        };
+
+        // --- STATE ---
+        // Defaults
+        let selectedTidy = new Set(['hacer_cama', 'abrir_persiana']);
+        let selectedBreakfast = new Set(['leche', 'cereales']);
+        let selectedTeeth = new Set(['cepillo', 'pasta', 'lavar_cara']);
+        let selectedUndress = new Set(['pijama_camiseta', 'pijama_pantalon']);
+        let selectedDress = new Set(['calzoncillos', 'camiseta', 'pantalon']);
+        let selectedBackpack = new Set(['agua', 'almuerzo']);
+
+        // New State for flexible flow
+        let routineOrder = ['TIDY', 'BREAKFAST', 'TEETH', 'UNDRESS', 'DRESS', 'BACKPACK'];
+        let activePhases = new Set(['TIDY', 'BREAKFAST', 'TEETH', 'UNDRESS', 'DRESS', 'BACKPACK']);
+        let editingPhase = null; // Currently editing this phase in Setup
+
+        const state = {
+            theme: 'SPACE',
+            score: 0,
+            routine: ['TIDY', 'BREAKFAST', 'TEETH', 'UNDRESS', 'DRESS', 'BACKPACK'], // Default
+            phaseIndex: 0,
+            phase: '',
+            // Each phase will have its own progress set dynamically
+
+            // --- NEW TIME STATE ---
+            timeMode: 'OFF', // 'OFF', 'STOPWATCH', 'TIMER'
+            timerMinutes: 10,
+            timeSecondsRemaining: 0,
+            timeSecondsElapsed: 0,
+            timerInterval: null
+        };
+
+        // --- TIME SETTINGS LOGIC ---
+        function setTimeMode(mode) {
+            state.timeMode = mode;
+
+            // UI Update segments
+            const btns = document.querySelectorAll('.segmented-control .segment-btn');
+            btns.forEach(btn => btn.classList.remove('active'));
+            if (mode === 'OFF') btns[0].classList.add('active');
+            else if (mode === 'STOPWATCH') btns[1].classList.add('active');
+            else if (mode === 'TIMER') btns[2].classList.add('active');
+
+            // Show/Hide Timer Input
+            const timerDiv = document.getElementById('timer-input-div');
+            if (mode === 'TIMER') {
+                timerDiv.classList.add('visible');
+            } else {
+                timerDiv.classList.remove('visible');
+            }
+        }
+
+        function adjustTime(delta) {
+            state.timerMinutes += delta;
+            if (state.timerMinutes < 1) state.timerMinutes = 1;
+            if (state.timerMinutes > 60) state.timerMinutes = 60;
+            document.getElementById('time-minutes-display').innerText = state.timerMinutes;
+        }
+
+        // --- TIME ENGINE ---
+        function formatTime(totalSeconds) {
+            const m = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+            const s = (totalSeconds % 60).toString().padStart(2, '0');
+            return `${m}:${s}`;
+        }
+
+        function clockTick() {
+            const display = document.getElementById('time-text');
+            const board = document.getElementById('timer-display');
+
+            if (state.timeMode === 'STOPWATCH') {
+                state.timeSecondsElapsed++;
+                display.innerText = formatTime(state.timeSecondsElapsed);
+            }
+            else if (state.timeMode === 'TIMER') {
+                if (state.timeSecondsRemaining > 0) {
+                    state.timeSecondsRemaining--;
+                    display.innerText = formatTime(state.timeSecondsRemaining);
+
+                    if (state.timeSecondsRemaining <= 60) {
+                        board.classList.add('urgent');
+                    }
+                } else {
+                    display.innerText = "00:00";
+                    clearInterval(state.timerInterval);
+                    // Time over logic: Play alarm sound maybe?
+                    showEndGame(); // End game if timer runs out
+                }
+            }
+        }
+
+        // Helpers to map Phase ID to Set and Props
+        const PHASE_MAP = {
+            'TIDY': { set: selectedTidy, icon: '🛏️', label: 'Habitación', dataId: 'tidy' },
+            'BREAKFAST': { set: selectedBreakfast, icon: '🥣', label: 'Desayuno', dataId: 'breakfast' },
+            'TEETH': { set: selectedTeeth, icon: '🪥', label: 'Aseo', dataId: 'teeth' },
+            'UNDRESS': { set: selectedUndress, icon: '🔻', label: 'Quitarse', dataId: 'clothes' },
+            'DRESS': { set: selectedDress, icon: '🔺', label: 'Ponerse', dataId: 'clothes' },
+            'BACKPACK': { set: selectedBackpack, icon: '🎒', label: 'Mochila', dataId: 'backpack' }
+        };
+
+        // --- FUNCTIONS ---
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            // Show header on game screens
+            if (screenId.startsWith('screen-')) {
+                document.getElementById('main-header').classList.remove('hidden');
+            } else {
+                document.getElementById('main-header').classList.add('hidden');
+            }
+        }
+
+        function selectAdventure(themeKey) {
+            state.theme = themeKey;
+            const config = THEMES[themeKey];
+
+            // Apply Theme Class
+            document.body.className = config.class;
+
+            // Update Static Texts
+            document.getElementById('header-title').innerText = config.title;
+            document.getElementById('score-icon').innerText = config.scoreIcon;
+
+            // Setup title might be constant now, or theme flavor
+            // document.getElementById('setup-title').innerText = config.texts.setup; 
+
+            document.getElementById('tidy-title').innerText = config.texts.tidyTitle;
+            document.getElementById('breakfast-title').innerText = config.texts.breakfastTitle;
+            document.getElementById('teeth-title').innerText = config.texts.teethTitle;
+            document.getElementById('undress-title').innerText = config.texts.undressTitle;
+            document.getElementById('dress-title').innerText = config.texts.dressTitle;
+            document.getElementById('backpack-title').innerText = config.texts.backpackTitle;
+
+            document.getElementById('tidy-msg').innerText = config.texts.tidyMsg;
+            document.getElementById('breakfast-msg').innerText = config.texts.breakfastMsg;
+            document.getElementById('teeth-msg').innerText = config.texts.teethMsg;
+            document.getElementById('undress-msg').innerText = config.texts.undressMsg;
+            document.getElementById('dress-msg').innerText = config.texts.dressMsg;
+            document.getElementById('backpack-msg').innerText = config.texts.backpackMsg;
+
+            document.getElementById('success-msg').innerText = config.texts.successMsg;
+            document.getElementById('success-icon').innerText = config.texts.successIcon;
+
+            showScreen('screen-setup');
+            renderEditor();
+        }
+
+        function createCard(item, onClick, isSelected, isSetup, isDone) {
+            const div = document.createElement('div');
+            div.className = `card ${isSelected ? 'selected' : ''} ${isDone ? 'done' : ''}`;
+
+            if (isSetup) {
+                div.onclick = () => { onClick(item); };
+            } else {
+                div.onclick = (e) => {
+                    if (!isDone) onClick(item, e.clientX, e.clientY);
+                };
+            }
+
+            div.innerHTML = `
+            <div class="icon-circle">${item.icon}</div>
+            <div class="card-label">${item.name}</div>
+        `;
+            return div;
+        }
+
+        // --- MISSION BOARD LOGIC ---
+
+        function renderEditor() {
+            const routineList = document.getElementById('routine-list');
+            routineList.innerHTML = '';
+
+            state.routine.forEach((phaseId, index) => {
+                const info = PHASE_MAP[phaseId];
+                if (!info) return;
+
+                const card = document.createElement('div');
+                card.className = 'phase-card';
+                card.draggable = true;
+
+                const dragHandle = document.createElement('span');
+                dragHandle.className = 'drag-handle';
+                dragHandle.innerHTML = '☰';
+
+                const nameDiv = document.createElement('div');
+                nameDiv.className = 'phase-name';
+                nameDiv.innerHTML = `<span style="font-size:2rem">${info.icon}</span> ${info.label}`;
+
+                const controls = document.createElement('div');
+                controls.className = 'phase-controls';
+
+                const upBtn = document.createElement('button');
+                upBtn.className = 'btn-icon';
+                upBtn.innerHTML = '↑';
+                upBtn.onclick = () => movePhase(index, -1);
+                upBtn.disabled = index === 0;
+
+                const downBtn = document.createElement('button');
+                downBtn.className = 'btn-icon';
+                downBtn.innerHTML = '↓';
+                downBtn.onclick = () => movePhase(index, 1);
+                downBtn.disabled = index === state.routine.length - 1;
+
+                const delBtn = document.createElement('button');
+                delBtn.className = 'btn-icon';
+                delBtn.innerHTML = '❌';
+                delBtn.style.color = '#ff5252';
+                delBtn.onclick = () => removePhase(index);
+
+                controls.appendChild(upBtn);
+                controls.appendChild(downBtn);
+                controls.appendChild(delBtn);
+
+                nameDiv.prepend(dragHandle);
+                card.appendChild(nameDiv);
+                card.appendChild(controls);
+
+                // Basic Drag & Drop
+                card.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', index.toString());
+                    card.style.opacity = '0.5';
+                });
+                card.addEventListener('dragend', () => card.style.opacity = '1');
+                card.addEventListener('dragover', (e) => e.preventDefault());
+                card.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    const fromIndex = parseInt(e.dataTransfer.getData('text/plain'));
+                    if (fromIndex !== index && !isNaN(fromIndex)) {
+                        const phase = state.routine.splice(fromIndex, 1)[0];
+                        state.routine.splice(index, 0, phase);
+                        renderEditor();
+                    }
+                });
+
+                routineList.appendChild(card);
+            });
+
+            // Render editor pool (all available phases to add)
+            const editorPool = document.getElementById('editor-pool');
+            editorPool.innerHTML = '';
+            Object.keys(PHASE_MAP).forEach(phaseId => {
+                if (!state.routine.includes(phaseId)) {
+                    const info = PHASE_MAP[phaseId];
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `<div class="icon-circle" style="width:60px; height:60px; font-size:2.5rem; margin-bottom:5px;">${info.icon}</div><div class="card-label" style="font-size:0.9rem">${info.label}</div>`;
+                    card.onclick = () => addPhase(phaseId);
+                    editorPool.appendChild(card);
+                }
+            });
+        }
+
+        function addPhase(phaseId) {
+            state.routine.push(phaseId);
+            renderEditor();
+        }
+
+        function removePhase(index) {
+            state.routine.splice(index, 1);
+            renderEditor();
+        }
+
+        function movePhase(index, direction) {
+            const newIndex = index + direction;
+            if (newIndex >= 0 && newIndex < state.routine.length) {
+                const [movedPhase] = state.routine.splice(index, 1);
+                state.routine.splice(newIndex, 0, movedPhase);
+                renderEditor();
+            }
+        }
+
+        function toggleSet(set, id) {
+            set.has(id) ? set.delete(id) : set.add(id);
+        }
+
+        // --- GAME LOGIC ---
+
+        // Web Audio API Context for pop sound
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playPopSound() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.1);
+        }
+
+        // Parent Lock logic
+        let isParentLockActive = true;
+        function toggleParentLock() {
+            isParentLockActive = !isParentLockActive;
+            const btn = document.getElementById('parent-lock-btn');
+            const board = document.getElementById('mission-board'); // Changed to mission-board
+            const timeSettings = document.querySelector('.time-settings-panel').closest('.mission-board'); // Get parent of time settings
+
+            if (isParentLockActive) {
+                btn.innerText = '🔒';
+                board.classList.add('locked');
+                if (timeSettings) timeSettings.classList.add('locked');
+            } else {
+                btn.innerText = '🔓';
+                board.classList.remove('locked');
+                if (timeSettings) timeSettings.classList.remove('locked');
+            }
+        }
+
+        function renderGame(gridId, sourceSet, progressSet, handler) {
+            const grid = document.getElementById(gridId);
+
+            // Focus Mode Logic: Find the first item that is NOT in progressSet
+            const allItems = Array.from(sourceSet).map(id => catalog.find(i => i.id === id));
+            const remainingItem = allItems.find(item => !progressSet.has(item.id));
+
+            // If there's an item on screen, let's see if we just animate it out or render new
+            if (grid.children.length > 0) {
+                const currentCardId = grid.children[0].dataset.itemId;
+                if (remainingItem && currentCardId === remainingItem.id) {
+                    return; // Already showing the right item
+                }
+            }
+
+            grid.innerHTML = ''; // Start fresh
+            grid.style.display = 'flex';
+            grid.style.justifyContent = 'center';
+            grid.style.alignItems = 'center';
+            grid.style.height = '45vh'; // Take up more space for juicy focus
+
+            if (remainingItem) {
+                const card = createCard(remainingItem, handler, false, false, false);
+                card.dataset.itemId = remainingItem.id; // tag it
+                card.style.width = '300px';
+                card.style.height = '300px';
+                card.style.maxWidth = '90vw';
+                card.style.maxHeight = '90vw';
+
+                // Enhance inner elements for giant mode
+                const iconCircle = card.querySelector('.icon-circle');
+                iconCircle.style.width = '160px';
+                iconCircle.style.height = '160px';
+                iconCircle.style.fontSize = '6.5rem';
+                iconCircle.style.marginBottom = '20px';
+
+                const label = card.querySelector('.card-label');
+                label.style.fontSize = '2.2rem';
+                label.style.lineHeight = '1.1';
+
+                grid.appendChild(card);
+
+                // Read the name immediately when it appears for the first time
+                speak(remainingItem.name);
+            }
+        }
+
+        function updateProgressBar(phase) {
+            const info = PHASE_MAP[phase];
+            if (!info) return;
+            const sourceSet = info.set;
+            const progressSet = state[phase.toLowerCase() + 'Progress'];
+            const bar = document.getElementById(phase.toLowerCase() + '-progress');
+            if (bar) {
+                if (sourceSet.size > 0) {
+                    const percentage = (progressSet.size / sourceSet.size) * 100;
+                    bar.style.width = percentage + '%';
+                } else {
+                    bar.style.width = '100%';
+                }
+            }
+        }
+
+        function switchPhase() {
+            const currentPhaseId = state.routine[state.phaseIndex];
+
+            if (!currentPhaseId) {
+                return showEndGame();
+            }
+
+            state.phase = currentPhaseId; // Update current phase in state
+            const screenId = 'screen-' + currentPhaseId.toLowerCase();
+            const gridId = currentPhaseId.toLowerCase() + '-grid';
+            const info = PHASE_MAP[currentPhaseId];
+            const set = info.set;
+            const progress = state[currentPhaseId.toLowerCase() + 'Progress'];
+
+            showScreen(screenId);
+            renderGame(gridId, set, progress, handleGameClick);
+            updateProgressBar(currentPhaseId);
+
+            const msgKey = currentPhaseId.toLowerCase() + 'Msg';
+            const msg = THEMES[state.theme].texts[msgKey];
+            if (msg) speak(msg);
+        }
+
+        function handleGameClick(item, x, y) {
+            const info = PHASE_MAP[state.phase];
+            const sourceSet = info.set;
+            const progressSet = state[state.phase.toLowerCase() + 'Progress'];
+
+            if (!progressSet.has(item.id)) {
+                progressSet.add(item.id);
+                addScore(100, x, y);
+
+                playPopSound();
+
+                // Find the card to animate it before switching
+                const gridId = state.phase.toLowerCase() + '-grid';
+                const grid = document.getElementById(gridId);
+                if (grid && grid.children[0]) {
+                    const card = grid.children[0];
+                    card.classList.add('done');
+
+                    // Wait for squish animation to finish before updating UI
+                    setTimeout(() => {
+                        updateProgressBar(state.phase);
+                        checkPhaseComplete();
+                        if (progressSet.size < sourceSet.size) {
+                            renderGame(gridId, sourceSet, progressSet, handleGameClick);
+                        }
+                    }, 500);
+                } else {
+                    updateProgressBar(state.phase);
+                    checkPhaseComplete();
+                }
+            }
+        }
+
+        function addScore(amount, x, y) {
+            state.score += amount;
+            document.getElementById('score-display').innerText = state.score;
+
+            const pop = document.createElement('div');
+            pop.className = 'points-pop';
+            pop.innerText = `+${amount}`;
+            pop.style.left = (x || window.innerWidth / 2) + 'px';
+            pop.style.top = (y || window.innerHeight / 2) + 'px';
+            document.body.appendChild(pop);
+            setTimeout(() => pop.remove(), 800);
+
+            if (navigator.vibrate) navigator.vibrate(20);
+        }
+
+        function checkPhaseComplete() {
+            const info = PHASE_MAP[state.phase];
+            const sourceSet = info.set;
+            const progressSet = state[state.phase.toLowerCase() + 'Progress'];
+
+            if (progressSet.size === sourceSet.size) {
+                setTimeout(() => {
+                    state.phaseIndex++;
+                    switchPhase();
+                }, 1000); // 1s delay to admire the full bar and squish animation
+            }
+        }
+
+        // Function to create a list item for the Mission Map preview
+        function createPreviewItem(item, index) {
+            const div = document.createElement('div');
+            div.className = 'preview-item';
+            div.style.animationDelay = `${index * 0.15}s`;
+
+            div.innerHTML = `
+                <div class="preview-icon">${item.icon}</div>
+                <div class="preview-text">${item.name}</div>
+            `;
+            return div;
+        }
+
+        // SHOW PREVIEW SCREEN
+        function showPreviewScreen() {
+            if (state.routine.length === 0) {
+                alert("Please add at least one phase to the routine.");
+                return;
+            }
+
+            showScreen('screen-preview');
+
+            // Build the grand list of everything to do!
+            const listContainer = document.getElementById('preview-list-container');
+            listContainer.innerHTML = '';
+
+            let delayIndex = 0;
+            state.routine.forEach(phaseId => {
+                const info = PHASE_MAP[phaseId];
+                const phaseSet = info.set;
+
+                // Phase Header
+                const header = document.createElement('h3');
+                header.innerText = `--- ${info.label} ---`;
+                header.style.color = "rgba(255,255,255,0.7)";
+                header.style.fontSize = "1.1rem";
+                header.style.marginTop = "10px";
+                header.style.animation = `fadeInRight 0.5s ease ${delayIndex * 0.15}s backwards`;
+                listContainer.appendChild(header);
+                delayIndex++;
+
+                // Tasks
+                Array.from(phaseSet).forEach(itemId => {
+                    const itemData = catalog.find(i => i.id === itemId);
+                    if (itemData) {
+                        listContainer.appendChild(createPreviewItem(itemData, delayIndex));
+                        delayIndex++;
+                    }
+                });
+            });
+
+            // Contextualize title
+            document.getElementById('preview-subtitle').innerText = THEMES[state.theme].welcome;
+        }
+
+        function startGame() {
+            state.score = 0;
+            document.getElementById('score-display').innerText = state.score;
+            state.phaseIndex = 0;
+
+            // Initialize progress sets for all phases dynamically
+            state.routine.forEach(phaseId => {
+                state[phaseId.toLowerCase() + 'Progress'] = new Set();
+            });
+
+            // Start Time Engine
+            clearInterval(state.timerInterval);
+            const timerBoard = document.getElementById('timer-display');
+            if (state.timeMode !== 'OFF') {
+                timerBoard.style.display = 'flex';
+                timerBoard.classList.remove('urgent');
+
+                if (state.timeMode === 'TIMER') {
+                    state.timeSecondsRemaining = state.timerMinutes * 60;
+                    document.getElementById('time-text').innerText = formatTime(state.timeSecondsRemaining);
+                } else if (state.timeMode === 'STOPWATCH') {
+                    state.timeSecondsElapsed = 0;
+                    document.getElementById('time-text').innerText = "00:00";
+                }
+
+                state.timerInterval = setInterval(clockTick, 1000);
+            } else {
+                timerBoard.style.display = 'none';
+            }
+
+            switchPhase();
+        }
+
+        // --- ENDGAME ---
+        function showEndGame() {
+            clearInterval(state.timerInterval); // Stop clock
+            playPopSound(); // or some victory sound
+
+            showScreen('screen-success'); // Changed to screen-success
+            startConfetti();
+        }
+
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                const u = new SpeechSynthesisUtterance(text);
+                u.lang = 'es-ES';
+                window.speechSynthesis.speak(u);
+            }
+        }
+        let confettiLoop;
+        function startConfetti() {
+            if (confettiLoop) cancelAnimationFrame(confettiLoop);
+            const canvas = document.getElementById('confetti');
+            const ctx = canvas.getContext('2d');
+
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            // Use theme icon as main confetti shape
+            const themeConfig = THEMES[state.theme];
+            const emojis = [themeConfig.scoreIcon, themeConfig.icon, '✨', '⭐'];
+            const colors = ['#FFD93D', '#F72585', '#4CC9F0', '#2ECC71', '#FFFFFF'];
+
+            const particles = Array.from({ length: 150 }, () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height * 1.5,
+                size: Math.random() * 25 + 15,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                emoji: Math.random() > 0.4 ? emojis[Math.floor(Math.random() * emojis.length)] : null,
+                speed: Math.random() * 6 + 3,
+                angle: Math.random() * Math.PI * 2,
+                spin: (Math.random() - 0.5) * 0.2
+            }));
+
+            function loop() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    p.y += p.speed;
+                    p.angle += p.spin;
+
+                    if (p.y > canvas.height) {
+                        p.y = -50;
+                        p.x = Math.random() * canvas.width;
+                    }
+
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.angle);
+
+                    if (p.emoji) {
+                        ctx.font = `${p.size}px Arial`;
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(p.emoji, 0, 0);
+                    } else {
+                        ctx.fillStyle = p.color;
+                        ctx.beginPath();
+                        ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                    ctx.restore();
+                });
+                confettiLoop = requestAnimationFrame(loop);
+            }
+            loop();
+        }
+
+    </script>
+</body>
+
+</html>
