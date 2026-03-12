@@ -763,6 +763,39 @@
                 font-size: 1.8rem;
                 padding: 18px 20px;
             }
+
+            /* TWO ROWS FOR PHASE CARDS ON MOBILE */
+            .phase-card {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 15px;
+                gap: 15px;
+            }
+
+            .phase-name {
+                width: 100%;
+                padding-bottom: 10px;
+                border-bottom: 1px solid var(--glass-border);
+                justify-content: center;
+            }
+
+            .phase-controls {
+                width: 100%;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            /* STACKED TIME SETTINGS ON MOBILE */
+            .setting-row {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .segmented-control {
+                width: 100%;
+                justify-content: center;
+            }
         }
 
         /* --- NEW TIME SETTINGS UI IN SETUP --- */
@@ -1842,7 +1875,10 @@
                 div.onclick = () => { onClick(item); };
             } else {
                 div.onclick = (e) => {
-                    if (!isDone) onClick(item, e.clientX, e.clientY);
+                    const rect = div.getBoundingClientRect();
+                    const x = e.clientX || rect.left + rect.width / 2;
+                    const y = e.clientY || rect.top + rect.height / 2;
+                    if (!isDone) onClick(item, x, y);
                 };
             }
 
@@ -1867,16 +1903,19 @@
                 card.className = 'phase-card';
                 card.draggable = true;
 
-                const dragHandle = document.createElement('span');
-                dragHandle.className = 'drag-handle';
-                dragHandle.innerHTML = '☰';
-
                 const nameDiv = document.createElement('div');
                 nameDiv.className = 'phase-name';
                 nameDiv.innerHTML = `<span style="font-size:2rem">${info.icon}</span> ${info.label}`;
 
                 const controls = document.createElement('div');
                 controls.className = 'phase-controls';
+
+                // EDIT ITEMS BTN
+                const editBtn = document.createElement('button');
+                editBtn.className = 'btn-icon';
+                editBtn.innerHTML = '✏️';
+                editBtn.onclick = () => openPhaseEdit(phaseId);
+                if (editingPhase === phaseId) editBtn.style.borderColor = 'var(--secondary)';
 
                 const upBtn = document.createElement('button');
                 upBtn.className = 'btn-icon';
@@ -1896,11 +1935,11 @@
                 delBtn.style.color = '#ff5252';
                 delBtn.onclick = () => removePhase(index);
 
+                controls.appendChild(editBtn); // Add edit btn
                 controls.appendChild(upBtn);
                 controls.appendChild(downBtn);
                 controls.appendChild(delBtn);
 
-                nameDiv.prepend(dragHandle);
                 card.appendChild(nameDiv);
                 card.appendChild(controls);
 
@@ -1924,19 +1963,48 @@
                 routineList.appendChild(card);
             });
 
-            // Render editor pool (all available phases to add)
+            // Render editor pool
             const editorPool = document.getElementById('editor-pool');
+            const editorTitle = document.querySelector('.mission-editor h2');
             editorPool.innerHTML = '';
-            Object.keys(PHASE_MAP).forEach(phaseId => {
-                if (!state.routine.includes(phaseId)) {
-                    const info = PHASE_MAP[phaseId];
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `<div class="icon-circle" style="width:60px; height:60px; font-size:2.5rem; margin-bottom:5px;">${info.icon}</div><div class="card-label" style="font-size:0.9rem">${info.label}</div>`;
-                    card.onclick = () => addPhase(phaseId);
+
+            if (editingPhase) {
+                const info = PHASE_MAP[editingPhase];
+                editorTitle.innerHTML = `EDITAR: ${info.label} <button class="ctrl-btn" onclick="closePhaseEdit()" style="float:right; font-size: 0.8rem; background:rgba(255,255,255,0.1); padding: 5px 10px; border-radius: 15px;">Atrás</button>`;
+                
+                // Show matching items from catalog
+                const matchingItems = catalog.filter(item => item.type === info.dataId);
+                matchingItems.forEach(item => {
+                    const isSelected = info.set.has(item.id);
+                    const card = createCard(item, () => {
+                        toggleSet(info.set, item.id);
+                        renderEditor(); // Refresh to show selection
+                    }, isSelected, true, false);
                     editorPool.appendChild(card);
-                }
-            });
+                });
+            } else {
+                editorTitle.innerText = 'AÑADIR FASE';
+                Object.keys(PHASE_MAP).forEach(phaseId => {
+                    if (!state.routine.includes(phaseId)) {
+                        const info = PHASE_MAP[phaseId];
+                        const card = document.createElement('div');
+                        card.className = 'card';
+                        card.innerHTML = `<div class="icon-circle" style="width:60px; height:60px; font-size:2.5rem; margin-bottom:5px;">${info.icon}</div><div class="card-label" style="font-size:0.9rem">${info.label}</div>`;
+                        card.onclick = () => addPhase(phaseId);
+                        editorPool.appendChild(card);
+                    }
+                });
+            }
+        }
+
+        function openPhaseEdit(phaseId) {
+            editingPhase = phaseId;
+            renderEditor();
+        }
+
+        function closePhaseEdit() {
+            editingPhase = null;
+            renderEditor();
         }
 
         function addPhase(phaseId) {
