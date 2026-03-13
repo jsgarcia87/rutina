@@ -27,6 +27,10 @@
             --font-main: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
             --font-head: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
             /* Soften header font */
+
+            /* RPG COLORS */
+            --xp-bar: #3A86FF;
+            --lvl-gold: #FFD700;
         }
 
         /* 🚀 THEME: SPACE */
@@ -236,6 +240,117 @@
             gap: 12px;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
             animation: float 6s ease-in-out infinite;
+            position: relative;
+        }
+
+        .level-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: var(--lvl-gold);
+            color: #000;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 900;
+            border: 2px solid white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: 5;
+        }
+
+        .xp-container {
+            width: 150px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-top: 5px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .xp-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--xp-bar);
+            transition: width 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 10px var(--xp-bar);
+        }
+
+        /* PET WIDGET */
+        .pet-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            box-shadow: var(--glass-shadow);
+            animation: float 4s ease-in-out infinite;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .pet-widget:hover {
+            transform: scale(1.1);
+        }
+
+        .pet-emoji {
+            font-size: 3rem;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+        }
+
+        .pet-name {
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            background: rgba(0,0,0,0.4);
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-top: -5px;
+        }
+
+        /* BOSS MODE */
+        .boss-mode-active #tidy-grid .card:not(.done), 
+        .boss-mode-active #breakfast-grid .card:not(.done),
+        .boss-mode-active #teeth-grid .card:not(.done),
+        .boss-mode-active #undress-grid .card:not(.done),
+        .boss-mode-active #dress-grid .card:not(.done),
+        .boss-mode-active #backpack-grid .card:not(.done) {
+            border: 4px solid #FF5252;
+            box-shadow: 0 0 40px #FF5252;
+            animation: shake 0.5s infinite;
+        }
+
+        .boss-label {
+            position: absolute;
+            top: -20px;
+            background: #FF5252;
+            color: white;
+            padding: 4px 15px;
+            border-radius: 20px;
+            font-weight: 900;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 15px rgba(255, 82, 82, 0.5);
+            z-index: 10;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translate(0, 0) rotate(0); }
+            25% { transform: translate(-2px, -2px) rotate(-1deg); }
+            50% { transform: translate(2px, 2px) rotate(1deg); }
+            75% { transform: translate(-2px, 2px) rotate(-1deg); }
         }
 
         .points-pop {
@@ -934,36 +1049,46 @@
         /* --- HUD (IN-GAME TIME) --- */
         .hud-top {
             display: flex;
-            justify-content: center;
-            gap: 20px;
-            width: 100%;
-            padding: 0 20px;
+            flex-direction: column;
             align-items: center;
-            margin-bottom: 20px;
+            gap: 10px;
+            width: 100%;
+            padding: 10px 20px;
+            z-index: 10;
         }
 
         .timer-board {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.4);
             backdrop-filter: blur(20px);
-            padding: 8px 25px;
+            padding: 10px 30px;
             border-radius: 50px;
-            border: 1px solid var(--glass-light);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 20px var(--accent), inset 0 2px 0 rgba(255, 255, 255, 0.2);
             font-family: var(--font-head);
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: white;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--accent);
             display: flex;
             align-items: center;
-            gap: 10px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            gap: 12px;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             display: none;
             /* hidden if time is off */
+            min-width: 140px;
+            transition: all 0.3s ease;
         }
 
         .timer-board.urgent {
             color: #FF5252;
-            animation: pulseLiquid 0.5s infinite alternate;
+            border-color: #FF5252;
+            box-shadow: 0 0 30px #FF5252, inset 0 2px 0 rgba(255, 255, 255, 0.2);
+            animation: pulseUrgent 0.5s infinite alternate;
+        }
+
+        @keyframes pulseUrgent {
+            from { transform: scale(1); opacity: 1; }
+            to { transform: scale(1.05); opacity: 0.8; }
         }
 
         .phase-card {
@@ -1271,9 +1396,21 @@
         <h1 class="main-title" id="header-title">MI AVENTURA</h1>
         <div class="score-board">
             <span id="score-icon">⭐</span>
-            <span id="score-display">0</span>
+            <div style="display:flex; flex-direction:column; align-items:center;">
+                <span id="score-display">0</span>
+                <div class="xp-container">
+                    <div class="xp-bar-fill" id="xp-bar-fill"></div>
+                </div>
+            </div>
+            <div class="level-badge" id="level-display">1</div>
         </div>
     </header>
+
+    <!-- PET WIDGET -->
+    <div id="pet-companion" class="pet-widget hidden">
+        <div class="pet-emoji" id="pet-emoji">🥚</div>
+        <div class="pet-name" id="pet-name">MI COMPAÑERO</div>
+    </div>
 
     <!-- 1. ADVENTURE SELECTOR -->
     <section id="screen-adventure" class="screen active">
@@ -1747,8 +1884,78 @@
             timerMinutes: 10,
             timeSecondsRemaining: 0,
             timeSecondsElapsed: 0,
-            timerInterval: null
+            timerInterval: null,
+
+            // --- RPG STATE ---
+            level: 1,
+            xp: 0,
+            xpToNextLevel: 500,
+            petStage: 0, // 0: Egg, 1: Baby, 2: Adult, 3: Hero
+            isBossActive: false
         };
+
+        const PET_STAGES = {
+            SPACE: ['🥚', '🤖', '🛸', '🛰️'],
+            FOREST: ['🥚', '🐥', '🦊', '🦌'],
+            PIRATE: ['🥚', '🐢', '🦜', '🏴‍☠️'],
+            JUNGLE: ['🥚', '🐒', '🐆', '🦁'],
+            DINO: ['🥚', '🦖', '🦕', '🐉'],
+            RACING: ['🥚', '🏎️', '🏎️', '🏆'],
+            HERO: ['🥚', '🐕', '🦸', '⚡']
+        };
+
+        function addXP(amount) {
+            state.xp += amount;
+            
+            // Check Level Up
+            if (state.xp >= state.xpToNextLevel) {
+                state.xp -= state.xpToNextLevel;
+                state.level++;
+                state.xpToNextLevel = Math.floor(state.xpToNextLevel * 1.5);
+                
+                // Pet evolution every 2 levels
+                if (state.level % 2 === 0 && state.petStage < 3) {
+                    state.petStage++;
+                    updatePetUI();
+                    speak("¡Tu compañero ha evolucionado!");
+                }
+                
+                speak(`¡Increíble! Has subido al nivel ${state.level}`);
+                celebrateLevelUp();
+            }
+            
+            updateRPGHeader();
+        }
+
+        function updateRPGHeader() {
+            document.getElementById('level-display').innerText = state.level;
+            const xpPercent = (state.xp / state.xpToNextLevel) * 100;
+            document.getElementById('xp-bar-fill').style.width = xpPercent + '%';
+        }
+
+        function updatePetUI() {
+            const themeEmoji = PET_STAGES[state.theme] || PET_STAGES.SPACE;
+            document.getElementById('pet-emoji').innerText = themeEmoji[state.petStage];
+            
+            const petNames = {
+                EGG: 'HUEVO MISTERIOSO',
+                BABY: 'PEQUEÑO AMIGO',
+                ADULT: 'GRAN COMPAÑERO',
+                HERO: 'HÉROE LEGENDARIO'
+            };
+            const stages = ['EGG', 'BABY', 'ADULT', 'HERO'];
+            document.getElementById('pet-name').innerText = petNames[stages[state.petStage]];
+        }
+
+        function celebrateLevelUp() {
+            startConfetti();
+            setTimeout(() => {
+                if (state.phaseIndex < state.routine.length) {
+                    // Stop confetti if game is still going after a bit
+                    // or just let it run if it's short
+                }
+            }, 3000);
+        }
 
         // --- TIME SETTINGS LOGIC ---
         function setTimeMode(mode) {
@@ -2012,6 +2219,8 @@
         function openPhaseEdit(phaseId) {
             editingPhase = phaseId;
             renderEditor();
+            // Scroll to editor on mobile/scrollable views
+            document.querySelector('.mission-editor').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         function closePhaseEdit() {
@@ -2124,6 +2333,16 @@
 
                 // Read the name immediately when it appears for the first time
                 speak(remainingItem.name);
+
+                // Boss Activation logic
+                if (state.isBossActive) {
+                    const bossLabel = document.createElement('div');
+                    bossLabel.className = 'boss-label';
+                    bossLabel.innerText = '👾 ¡JEFE FINAL! 👾';
+                    card.appendChild(bossLabel);
+                    card.style.borderColor = '#FF5252';
+                    speak("¡Cuidado! ¡Ha aparecido el Jefe Final!");
+                }
             }
         }
 
@@ -2164,6 +2383,15 @@
             const screenId = 'screen-' + currentPhaseId.toLowerCase();
             const gridId = currentPhaseId.toLowerCase() + '-grid';
 
+            // Check if this is the LAST phase AND will be the LAST item
+            // or we just enable boss mode if it's the last phase
+            state.isBossActive = (state.phaseIndex === state.routine.length - 1);
+            if (state.isBossActive) {
+                document.body.classList.add('boss-mode-active');
+            } else {
+                document.body.classList.remove('boss-mode-active');
+            }
+
             showScreen(screenId);
             renderGame(gridId, set, progress, handleGameClick);
             updateProgressBar(currentPhaseId);
@@ -2180,7 +2408,18 @@
 
             if (!progressSet.has(item.id)) {
                 progressSet.add(item.id);
-                addScore(100, x, y);
+                
+                let scoreGain = 100;
+                let xpGain = 50;
+
+                if (state.isBossActive) {
+                    scoreGain *= 3;
+                    xpGain *= 3;
+                    speak("¡Has derrotado al Jefe! ¡Increíble!");
+                }
+
+                addScore(scoreGain, x, y);
+                addXP(xpGain);
 
                 playPopSound();
 
@@ -2299,6 +2538,13 @@
                 state[phaseId.toLowerCase() + 'Progress'] = new Set();
             });
 
+            state.xp = 0;
+            state.level = 1;
+            state.petStage = 0;
+            updateRPGHeader();
+            updatePetUI();
+            document.getElementById('pet-companion').classList.remove('hidden');
+
             // Start Time Engine
             clearInterval(state.timerInterval);
             const timerBoard = document.getElementById('timer-display');
@@ -2326,6 +2572,8 @@
         function showEndGame() {
             clearInterval(state.timerInterval); // Stop clock
             playPopSound(); // or some victory sound
+
+            document.getElementById('final-score').innerText = `${state.score} PUNTOS`;
 
             showScreen('screen-success'); // Changed to screen-success
             startConfetti();
