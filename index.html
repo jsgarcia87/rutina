@@ -1950,11 +1950,11 @@
         function celebrateLevelUp() {
             startConfetti();
             setTimeout(() => {
+                // If the game is still going, stop the confetti after 4 seconds
                 if (state.phaseIndex < state.routine.length) {
-                    // Stop confetti if game is still going after a bit
-                    // or just let it run if it's short
+                    stopConfetti();
                 }
-            }, 3000);
+            }, 4000);
         }
 
         // --- TIME SETTINGS LOGIC ---
@@ -2590,6 +2590,7 @@
         function startConfetti() {
             if (confettiLoop) cancelAnimationFrame(confettiLoop);
             const canvas = document.getElementById('confetti');
+            canvas.style.display = 'block'; // Ensure it's visible
             const ctx = canvas.getContext('2d');
 
             canvas.width = window.innerWidth;
@@ -2642,6 +2643,17 @@
                 confettiLoop = requestAnimationFrame(loop);
             }
             loop();
+        }
+
+        function stopConfetti() {
+            if (confettiLoop) {
+                cancelAnimationFrame(confettiLoop);
+                confettiLoop = null;
+            }
+            const canvas = document.getElementById('confetti');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            canvas.style.display = 'none'; // Hide it
         }
 
     </script>
