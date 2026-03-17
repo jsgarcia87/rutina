@@ -1429,6 +1429,14 @@
             <div class="level-badge" id="level-display">1</div>
         </div>
     </header>
+    
+    <!-- GLOBAL HUD (TIMER & BACK) -->
+    <div id="global-hud" class="hud-top hidden" style="flex-direction: row; justify-content: space-between; position: sticky; top: 80px; backdrop-filter: blur(10px); background: rgba(0,0,0,0.1); padding: 5px 20px;">
+        <div class="timer-board" id="timer-display" style="min-width: 120px; font-size: 1.5rem; padding: 5px 15px;">
+            <span>⏱️</span> <span id="time-text">00:00</span>
+        </div>
+        <button class="back-btn" id="back-nav-btn" onclick="goBack()" title="Volver atrás" style="width: 40px; height: 40px; font-size: 1.2rem;">🔙</button>
+    </div>
 
     <!-- PET WIDGET -->
     <div id="pet-companion" class="pet-widget hidden">
@@ -1553,16 +1561,6 @@
 
     <!-- PANTALLA 3: GAME (TIDY) -->
     <section id="screen-tidy" class="screen" style="justify-content: flex-start;">
-        <div class="hud-top">
-            <div class="score-board">
-                <span>⭐</span> <span id="score-display">0</span>
-            </div>
-            <!-- RELOJ -->
-                <span>⏱️</span> <span id="time-text">00:00</span>
-            </div>
-            <!-- BOTÓN VOLVER -->
-            <button class="back-btn" id="back-nav-btn" onclick="goBack()" title="Volver atrás">🔙</button>
-        </div>
         <h2 id="tidy-title">FASE 1: ORDENAR</h2>
         <div class="message-area" id="tidy-msg">Mensaje de orden</div>
         <div class="progress-container">
@@ -1933,6 +1931,8 @@
                 petStage: state.petStage,
                 timeMode: state.timeMode,
                 timerMinutes: state.timerMinutes,
+                timeSecondsRemaining: state.timeSecondsRemaining,
+                timeSecondsElapsed: state.timeSecondsElapsed,
                 // Sets need conversion to Array
                 selectedTidy: Array.from(selectedTidy),
                 selectedBreakfast: Array.from(selectedBreakfast),
@@ -2003,12 +2003,35 @@
                         const phaseId = state.routine[state.phaseIndex];
                         if (phaseId) {
                             state.phase = phaseId;
+                            
+                            // Initialize progress sets if they were lost or need conversion
+                            state.routine.forEach(p => {
+                                if (!(state[p.toLowerCase() + 'Progress'] instanceof Set)) {
+                                    state[p.toLowerCase() + 'Progress'] = new Set(data[p.toLowerCase() + 'Progress'] || []);
+                                }
+                            });
+
                             switchPhase();
+                            
+                            // Resume Timer
+                            if (state.timeMode !== 'OFF') {
+                                if (state.timeMode === 'TIMER') {
+                                    // Estimate remaining time (approximate)
+                                    state.timeSecondsRemaining = data.timeSecondsRemaining || (state.timerMinutes * 60);
+                                }
+                                clearInterval(state.timerInterval);
+                                state.timerInterval = setInterval(clockTick, 1000);
+                            }
                         } else {
                             showScreen('screen-select');
                         }
                     } else {
                         showScreen(data.activeScreen);
+                    }
+                    
+                    // Show pet if game in progress
+                    if (state.level > 1 || state.score > 0) {
+                        document.getElementById('pet-companion').classList.remove('hidden');
                     }
                 }
                 
@@ -2163,11 +2186,18 @@
                 console.error("Screen not found:", screenId);
             }
             
-            // Show header on game screens
-            if (screenId.startsWith('screen-')) {
+            // Show header/HUD on game screens
+            if (screenId.startsWith('screen-') && screenId !== 'screen-adventure' && screenId !== 'screen-setup' && screenId !== 'screen-preview') {
                 document.getElementById('main-header').classList.remove('hidden');
+                document.getElementById('global-hud').classList.remove('hidden');
             } else {
                 document.getElementById('main-header').classList.add('hidden');
+                document.getElementById('global-hud').classList.add('hidden');
+            }
+            
+            // Re-show header for success screen too
+            if (screenId === 'screen-success') {
+                document.getElementById('main-header').classList.remove('hidden');
             }
         }
 
@@ -2587,6 +2617,7 @@
                 addXP(xpGain);
 
                 playPopSound();
+                if (state.phase === 'UNDRESS' || state.phase === 'DRESS') speak(item.name);
 
                 // Find the card to animate it before switching
                 const gridId = state.phase.toLowerCase() + '-grid';
