@@ -1947,7 +1947,7 @@
                 undressProgress: state.undressProgress ? Array.from(state.undressProgress) : [],
                 dressProgress: state.dressProgress ? Array.from(state.dressProgress) : [],
                 backpackProgress: state.backpackProgress ? Array.from(state.backpackProgress) : [],
-                activeScreen: document.querySelector('.screen.active')?.id || 'screen-select'
+                activeScreen: document.querySelector('.screen.active')?.id || 'screen-adventure'
             };
             localStorage.setItem('rutina_rpg_state', JSON.stringify(dataToSave));
         }
@@ -1994,45 +1994,43 @@
                 updatePetUI();
 
                 // Restore Screen
-                if (data.activeScreen && data.activeScreen !== 'screen-select') {
-                    if (data.activeScreen === 'screen-setup') {
-                        showScreen('screen-setup');
-                        renderEditor();
-                    } else if (data.activeScreen.startsWith('screen-')) {
-                        // If it's a game screen, we need to re-initialize and switch to phase
-                        const phaseId = state.routine[state.phaseIndex];
-                        if (phaseId) {
-                            state.phase = phaseId;
-                            
-                            // Initialize progress sets if they were lost or need conversion
-                            state.routine.forEach(p => {
-                                if (!(state[p.toLowerCase() + 'Progress'] instanceof Set)) {
-                                    state[p.toLowerCase() + 'Progress'] = new Set(data[p.toLowerCase() + 'Progress'] || []);
-                                }
-                            });
-
-                            switchPhase();
-                            
-                            // Resume Timer
-                            if (state.timeMode !== 'OFF') {
-                                if (state.timeMode === 'TIMER') {
-                                    // Estimate remaining time (approximate)
-                                    state.timeSecondsRemaining = data.timeSecondsRemaining || (state.timerMinutes * 60);
-                                }
-                                clearInterval(state.timerInterval);
-                                state.timerInterval = setInterval(clockTick, 1000);
+                if (data.activeScreen === 'screen-setup') {
+                    showScreen('screen-setup');
+                    renderEditor();
+                } else if (data.activeScreen && data.activeScreen.startsWith('screen-') && data.activeScreen !== 'screen-adventure' && data.activeScreen !== 'screen-select') {
+                    // Game screens (tidy, breakfast, etc.)
+                    const phaseId = state.routine[state.phaseIndex];
+                    if (phaseId) {
+                        state.phase = phaseId;
+                        
+                        // Initialize progress sets if they were lost or need conversion
+                        state.routine.forEach(p => {
+                            if (!(state[p.toLowerCase() + 'Progress'] instanceof Set)) {
+                                state[p.toLowerCase() + 'Progress'] = new Set(data[p.toLowerCase() + 'Progress'] || []);
                             }
-                        } else {
-                            showScreen('screen-select');
+                        });
+
+                        switchPhase();
+                        
+                        // Resume Timer
+                        if (state.timeMode !== 'OFF') {
+                            if (state.timeMode === 'TIMER') {
+                                state.timeSecondsRemaining = data.timeSecondsRemaining || (state.timerMinutes * 60);
+                            }
+                            clearInterval(state.timerInterval);
+                            state.timerInterval = setInterval(clockTick, 1000);
                         }
                     } else {
-                        showScreen(data.activeScreen);
+                        showScreen('screen-adventure');
                     }
-                    
-                    // Show pet if game in progress
-                    if (state.level > 1 || state.score > 0) {
-                        document.getElementById('pet-companion').classList.remove('hidden');
-                    }
+                } else {
+                    // Default or selection screen
+                    showScreen('screen-adventure');
+                }
+
+                // Show pet if game in progress or character has level
+                if (state.level > 1 || state.score > 0) {
+                    document.getElementById('pet-companion').classList.remove('hidden');
                 }
                 
                 return true;
@@ -2858,7 +2856,7 @@
         // Initialize
         window.onload = () => {
             if (!loadState()) {
-                showScreen('screen-select');
+                showScreen('screen-adventure');
             }
         };
 
