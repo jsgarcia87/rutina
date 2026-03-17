@@ -215,6 +215,30 @@
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
         }
 
+        .back-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+            margin-left: 10px;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .back-btn:active {
+            transform: scale(0.9);
+        }
+
         #header-title {
             font-size: 1.8rem;
             margin: 0 0 10px 0;
@@ -1534,9 +1558,10 @@
                 <span>⭐</span> <span id="score-display">0</span>
             </div>
             <!-- RELOJ -->
-            <div class="timer-board" id="timer-display">
                 <span>⏱️</span> <span id="time-text">00:00</span>
             </div>
+            <!-- BOTÓN VOLVER -->
+            <button class="back-btn" id="back-nav-btn" onclick="goBack()" title="Volver atrás">🔙</button>
         </div>
         <h2 id="tidy-title">FASE 1: ORDENAR</h2>
         <div class="message-area" id="tidy-msg">Mensaje de orden</div>
@@ -1891,8 +1916,108 @@
             xp: 0,
             xpToNextLevel: 500,
             petStage: 0, // 0: Egg, 1: Baby, 2: Adult, 3: Hero
-            isBossActive: false
+            isBossActive: false,
+            lastUpdated: Date.now()
         };
+
+        // --- PERSISTENCE ---
+        function saveState() {
+            const dataToSave = {
+                theme: state.theme,
+                score: state.score,
+                routine: state.routine,
+                phaseIndex: state.phaseIndex,
+                level: state.level,
+                xp: state.xp,
+                xpToNextLevel: state.xpToNextLevel,
+                petStage: state.petStage,
+                timeMode: state.timeMode,
+                timerMinutes: state.timerMinutes,
+                // Sets need conversion to Array
+                selectedTidy: Array.from(selectedTidy),
+                selectedBreakfast: Array.from(selectedBreakfast),
+                selectedTeeth: Array.from(selectedTeeth),
+                selectedUndress: Array.from(selectedUndress),
+                selectedDress: Array.from(selectedDress),
+                selectedBackpack: Array.from(selectedBackpack),
+                // Progress sets
+                tidyProgress: state.tidyProgress ? Array.from(state.tidyProgress) : [],
+                breakfastProgress: state.breakfastProgress ? Array.from(state.breakfastProgress) : [],
+                teethProgress: state.teethProgress ? Array.from(state.teethProgress) : [],
+                undressProgress: state.undressProgress ? Array.from(state.undressProgress) : [],
+                dressProgress: state.dressProgress ? Array.from(state.dressProgress) : [],
+                backpackProgress: state.backpackProgress ? Array.from(state.backpackProgress) : [],
+                activeScreen: document.querySelector('.screen.active')?.id || 'screen-select'
+            };
+            localStorage.setItem('rutina_rpg_state', JSON.stringify(dataToSave));
+        }
+
+        function loadState() {
+            const saved = localStorage.getItem('rutina_rpg_state');
+            if (!saved) return false;
+
+            try {
+                const data = JSON.parse(saved);
+                state.theme = data.theme;
+                state.score = data.score;
+                state.routine = data.routine;
+                state.phaseIndex = data.phaseIndex;
+                state.level = data.level;
+                state.xp = data.xp;
+                state.xpToNextLevel = data.xpToNextLevel;
+                state.petStage = data.petStage;
+                state.timeMode = data.timeMode;
+                state.timerMinutes = data.timerMinutes;
+
+                // Restore Sets
+                selectedTidy = new Set(data.selectedTidy);
+                selectedBreakfast = new Set(data.selectedBreakfast);
+                selectedTeeth = new Set(data.selectedTeeth);
+                selectedUndress = new Set(data.selectedUndress);
+                selectedDress = new Set(data.selectedDress);
+                selectedBackpack = new Set(data.selectedBackpack);
+
+                // Restore Progress Sets
+                state.tidyProgress = new Set(data.tidyProgress);
+                state.breakfastProgress = new Set(data.breakfastProgress);
+                state.teethProgress = new Set(data.teethProgress);
+                state.undressProgress = new Set(data.undressProgress);
+                state.dressProgress = new Set(data.dressProgress);
+                state.backpackProgress = new Set(data.backpackProgress);
+
+                // Apply Theme
+                selectAdventure(state.theme);
+                
+                // Update HUD
+                document.getElementById('score-display').innerText = state.score;
+                updateRPGHeader();
+                updatePetUI();
+
+                // Restore Screen
+                if (data.activeScreen && data.activeScreen !== 'screen-select') {
+                    if (data.activeScreen === 'screen-setup') {
+                        showScreen('screen-setup');
+                        renderEditor();
+                    } else if (data.activeScreen.startsWith('screen-')) {
+                        // If it's a game screen, we need to re-initialize and switch to phase
+                        const phaseId = state.routine[state.phaseIndex];
+                        if (phaseId) {
+                            state.phase = phaseId;
+                            switchPhase();
+                        } else {
+                            showScreen('screen-select');
+                        }
+                    } else {
+                        showScreen(data.activeScreen);
+                    }
+                }
+                
+                return true;
+            } catch (e) {
+                console.error("Error loading state", e);
+                return false;
+            }
+        }
 
         const PET_STAGES = {
             SPACE: ['🥚', '🤖', '🛸', '🛰️'],
@@ -1925,6 +2050,7 @@
             }
             
             updateRPGHeader();
+            saveState();
         }
 
         function updateRPGHeader() {
@@ -2078,6 +2204,7 @@
 
             showScreen('screen-setup');
             renderEditor();
+            saveState();
         }
 
         function createCard(item, onClick, isSelected, isSetup, isDone) {
@@ -2249,6 +2376,7 @@
 
         function toggleSet(set, id) {
             set.has(id) ? set.delete(id) : set.add(id);
+            saveState();
         }
 
         // --- GAME LOGIC ---
@@ -2297,7 +2425,9 @@
             const remainingItem = allItems.find(item => !progressSet.has(item.id));
 
             // If there's an item on screen, let's see if we just animate it out or render new
-            if (grid.children.length > 0) {
+            const isClothesPhase = (state.phase === 'UNDRESS' || state.phase === 'DRESS');
+            
+            if (grid.children.length > 0 && !isClothesPhase) {
                 const currentCardId = grid.children[0].dataset.itemId;
                 if (remainingItem && currentCardId === remainingItem.id) {
                     return; // Already showing the right item
@@ -2305,43 +2435,60 @@
             }
 
             grid.innerHTML = ''; // Start fresh
-            grid.style.display = 'flex';
-            grid.style.justifyContent = 'center';
-            grid.style.alignItems = 'center';
-            grid.style.height = '45vh'; // Take up more space for juicy focus
 
-            if (remainingItem) {
-                const card = createCard(remainingItem, handler, false, false, false);
-                card.dataset.itemId = remainingItem.id; // tag it
-                card.style.width = '300px';
-                card.style.height = '300px';
-                card.style.maxWidth = '90vw';
-                card.style.maxHeight = '90vw';
+            if (isClothesPhase) {
+                // LIST VIEW FOR CLOTHES
+                grid.style.display = 'grid';
+                grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(140px, 1fr))';
+                grid.style.gap = '20px';
+                grid.style.height = 'auto';
+                grid.style.padding = '20px';
+                
+                allItems.forEach(item => {
+                    const isDone = progressSet.has(item.id);
+                    const card = createCard(item, handler, false, false, isDone);
+                    card.dataset.itemId = item.id;
+                    grid.appendChild(card);
+                });
+            } else {
+                // FOCUS VIEW FOR OTHERS
+                grid.style.display = 'flex';
+                grid.style.justifyContent = 'center';
+                grid.style.alignItems = 'center';
+                grid.style.height = '45vh'; // Take up more space for juicy focus
 
-                // Enhance inner elements for giant mode
-                const iconCircle = card.querySelector('.icon-circle');
-                iconCircle.style.width = '160px';
-                iconCircle.style.height = '160px';
-                iconCircle.style.fontSize = '6.5rem';
-                iconCircle.style.marginBottom = '20px';
+                if (remainingItem) {
+                    const card = createCard(remainingItem, handler, false, false, false);
+                    card.dataset.itemId = remainingItem.id; // tag it
+                    card.style.width = '300px';
+                    card.style.height = '300px';
+                    card.style.maxWidth = '90vw';
+                    card.style.maxHeight = '90vw';
 
-                const label = card.querySelector('.card-label');
-                label.style.fontSize = '2.2rem';
-                label.style.lineHeight = '1.1';
+                    // Enhance inner elements for giant mode
+                    const iconCircle = card.querySelector('.icon-circle');
+                    iconCircle.style.width = '160px';
+                    iconCircle.style.height = '160px';
+                    iconCircle.style.fontSize = '6.5rem';
+                    iconCircle.style.marginBottom = '20px';
 
-                grid.appendChild(card);
+                    const label = card.querySelector('.card-label');
+                    label.style.fontSize = '2.2rem';
+                    label.style.lineHeight = '1.1';
 
-                // Read the name immediately when it appears for the first time
-                speak(remainingItem.name);
+                    grid.appendChild(card);
 
-                // Boss Activation logic
-                if (state.isBossActive) {
-                    const bossLabel = document.createElement('div');
-                    bossLabel.className = 'boss-label';
-                    bossLabel.innerText = '👾 ¡JEFE FINAL! 👾';
-                    card.appendChild(bossLabel);
-                    card.style.borderColor = '#FF5252';
-                    speak("¡Cuidado! ¡Ha aparecido el Jefe Final!");
+                    // Read the name immediately when it appears for the first time
+                    speak(remainingItem.name);
+
+                    if (state.isBossActive) {
+                        const bossLabel = document.createElement('div');
+                        bossLabel.className = 'boss-label';
+                        bossLabel.innerText = '👾 ¡JEFE FINAL! 👾';
+                        card.appendChild(bossLabel);
+                        card.style.borderColor = '#FF5252';
+                        speak("¡Cuidado! ¡Ha aparecido el Jefe Final!");
+                    }
                 }
             }
         }
@@ -2399,6 +2546,24 @@
             const msgKey = currentPhaseId.toLowerCase() + 'Msg';
             const msg = THEMES[state.theme].texts[msgKey];
             if (msg) speak(msg);
+
+            // Update Back Button visibility
+            const backBtn = document.getElementById('back-nav-btn');
+            if (backBtn) {
+                backBtn.style.display = state.phaseIndex > 0 ? 'flex' : 'none';
+            }
+        }
+
+        function goBack() {
+            if (state.phaseIndex > 0) {
+                state.phaseIndex--;
+                switchPhase();
+                saveState();
+            } else {
+                // If it's the first phase, maybe go back to setup or preview?
+                // Let's decide to go back to preview for safety
+                showPreviewScreen();
+            }
         }
 
         function handleGameClick(item, x, y) {
@@ -2458,6 +2623,7 @@
             setTimeout(() => pop.remove(), 800);
 
             if (navigator.vibrate) navigator.vibrate(20);
+            saveState();
         }
 
         function checkPhaseComplete() {
@@ -2566,6 +2732,7 @@
             }
 
             switchPhase();
+            saveState();
         }
 
         // --- ENDGAME ---
@@ -2577,6 +2744,7 @@
 
             showScreen('screen-success'); // Changed to screen-success
             startConfetti();
+            localStorage.removeItem('rutina_rpg_state'); // Clear state on completion
         }
 
         function speak(text) {
@@ -2655,6 +2823,13 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             canvas.style.display = 'none'; // Hide it
         }
+
+        // Initialize
+        window.onload = () => {
+            if (!loadState()) {
+                showScreen('screen-select');
+            }
+        };
 
     </script>
 </body>
