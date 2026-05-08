@@ -1502,11 +1502,7 @@
         <h2 id="setup-title" style="margin-top: 10px;">TU MISIÓN</h2>
         <p style="text-align:center; opacity:0.8; margin-top:-10px;" id="setup-subtitle">¡Todo listo para empezar!</p>
 
-        <div class="lock-container">
-            <button class="lock-btn" id="parent-lock-btn" onclick="toggleParentLock()">🔓</button>
-        </div>
-
-        <div class="mission-board" id="mission-board">
+        <div class="mission-board locked" id="mission-board">
             <!-- Timeline/Routine List -->
             <div class="mission-timeline">
                 <h2>RUTINA BASE</h2>
@@ -1919,7 +1915,8 @@
         };
 
         // --- PERSISTENCE ---
-        function saveState() {
+        function saveState(screenIdOverride = null) {
+            const activeScreenId = screenIdOverride || document.querySelector('.screen.active')?.id || 'screen-adventure';
             const dataToSave = {
                 theme: state.theme,
                 score: state.score,
@@ -1947,7 +1944,7 @@
                 undressProgress: state.undressProgress ? Array.from(state.undressProgress) : [],
                 dressProgress: state.dressProgress ? Array.from(state.dressProgress) : [],
                 backpackProgress: state.backpackProgress ? Array.from(state.backpackProgress) : [],
-                activeScreen: document.querySelector('.screen.active')?.id || 'screen-adventure'
+                activeScreen: activeScreenId
             };
             localStorage.setItem('rutina_rpg_state', JSON.stringify(dataToSave));
         }
@@ -1978,12 +1975,12 @@
                 selectedBackpack = new Set(data.selectedBackpack);
 
                 // Restore Progress Sets
-                state.tidyProgress = new Set(data.tidyProgress);
-                state.breakfastProgress = new Set(data.breakfastProgress);
-                state.teethProgress = new Set(data.teethProgress);
-                state.undressProgress = new Set(data.undressProgress);
-                state.dressProgress = new Set(data.dressProgress);
-                state.backpackProgress = new Set(data.backpackProgress);
+                state.tidyProgress = new Set(data.tidyProgress || []);
+                state.breakfastProgress = new Set(data.breakfastProgress || []);
+                state.teethProgress = new Set(data.teethProgress || []);
+                state.undressProgress = new Set(data.undressProgress || []);
+                state.dressProgress = new Set(data.dressProgress || []);
+                state.backpackProgress = new Set(data.backpackProgress || []);
 
                 // Apply Theme
                 selectAdventure(state.theme);
@@ -1997,6 +1994,8 @@
                 if (data.activeScreen === 'screen-setup') {
                     showScreen('screen-setup');
                     renderEditor();
+                } else if (data.activeScreen === 'screen-preview') {
+                    showPreviewScreen();
                 } else if (data.activeScreen && data.activeScreen.startsWith('screen-') && data.activeScreen !== 'screen-adventure' && data.activeScreen !== 'screen-select') {
                     // Game screens (tidy, breakfast, etc.)
                     const phaseId = state.routine[state.phaseIndex];
@@ -2016,6 +2015,8 @@
                         if (state.timeMode !== 'OFF') {
                             if (state.timeMode === 'TIMER') {
                                 state.timeSecondsRemaining = data.timeSecondsRemaining || (state.timerMinutes * 60);
+                            } else if (state.timeMode === 'STOPWATCH') {
+                                state.timeSecondsElapsed = data.timeSecondsElapsed || 0;
                             }
                             clearInterval(state.timerInterval);
                             state.timerInterval = setInterval(clockTick, 1000);
@@ -2122,6 +2123,7 @@
             } else {
                 timerDiv.classList.remove('visible');
             }
+            saveState();
         }
 
         function adjustTime(delta) {
@@ -2129,6 +2131,7 @@
             if (state.timerMinutes < 1) state.timerMinutes = 1;
             if (state.timerMinutes > 60) state.timerMinutes = 60;
             document.getElementById('time-minutes-display').innerText = state.timerMinutes;
+            saveState();
         }
 
         // --- TIME ENGINE ---
@@ -2331,6 +2334,7 @@
                         const phase = state.routine.splice(fromIndex, 1)[0];
                         state.routine.splice(index, 0, phase);
                         renderEditor();
+                        saveState();
                     }
                 });
 
@@ -2386,11 +2390,13 @@
         function addPhase(phaseId) {
             state.routine.push(phaseId);
             renderEditor();
+            saveState();
         }
 
         function removePhase(index) {
             state.routine.splice(index, 1);
             renderEditor();
+            saveState();
         }
 
         function movePhase(index, direction) {
@@ -2399,6 +2405,7 @@
                 const [movedPhase] = state.routine.splice(index, 1);
                 state.routine.splice(newIndex, 0, movedPhase);
                 renderEditor();
+                saveState();
             }
         }
 
@@ -2620,22 +2627,26 @@
                 // Find the card to animate it before switching
                 const gridId = state.phase.toLowerCase() + '-grid';
                 const grid = document.getElementById(gridId);
-                if (grid && grid.children[0]) {
-                    const card = grid.children[0];
-                    card.classList.add('done');
+                if (grid) {
+                    const card = grid.querySelector(`[data-item-id="${item.id}"]`) || grid.children[0];
+                    if (card) {
+                        card.classList.add('done');
 
-                    // Wait for squish animation to finish before updating UI
-                    setTimeout(() => {
-                        updateProgressBar(state.phase);
-                        checkPhaseComplete();
-                        if (progressSet.size < sourceSet.size) {
-                            renderGame(gridId, sourceSet, progressSet, handleGameClick);
-                        }
-                    }, 500);
-                } else {
-                    updateProgressBar(state.phase);
-                    checkPhaseComplete();
+                        // Wait for squish animation to finish before updating UI
+                        setTimeout(() => {
+                            updateProgressBar(state.phase);
+                            checkPhaseComplete();
+                            if (progressSet.size < sourceSet.size) {
+                                renderGame(gridId, sourceSet, progressSet, handleGameClick);
+                            }
+                        }, 500);
+                        return;
+                    }
                 }
+                
+                // Fallback
+                updateProgressBar(state.phase);
+                checkPhaseComplete();
             }
         }
 
@@ -2684,7 +2695,7 @@
         // SHOW PREVIEW SCREEN
         function showPreviewScreen() {
             if (state.routine.length === 0) {
-                alert("Please add at least one phase to the routine.");
+                alert("Por favor, añade al menos una fase a la rutina.");
                 return;
             }
 
@@ -2733,9 +2744,6 @@
                 state[phaseId.toLowerCase() + 'Progress'] = new Set();
             });
 
-            state.xp = 0;
-            state.level = 1;
-            state.petStage = 0;
             updateRPGHeader();
             updatePetUI();
             document.getElementById('pet-companion').classList.remove('hidden');
@@ -2773,11 +2781,25 @@
 
             showScreen('screen-success'); // Changed to screen-success
             startConfetti();
-            localStorage.removeItem('rutina_rpg_state'); // Clear state on completion
+            
+            // Reset gameplay progress parameters
+            state.phaseIndex = 0;
+            state.phase = '';
+            state.timeSecondsRemaining = 0;
+            state.timeSecondsElapsed = 0;
+            
+            // Clear task completion sets
+            state.routine.forEach(phaseId => {
+                state[phaseId.toLowerCase() + 'Progress'] = new Set();
+            });
+
+            // Persist permanent RPG stats and custom setups, overriding activeScreen
+            saveState('screen-adventure');
         }
 
         function speak(text) {
             if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // Prevent voice overlap
                 const u = new SpeechSynthesisUtterance(text);
                 u.lang = 'es-ES';
                 window.speechSynthesis.speak(u);
